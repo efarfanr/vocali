@@ -1,0 +1,126 @@
+{% extends 'index_master.html' %}
+{% block content %}
+
+
+<div class="pagetitle">
+    <h1>Proceso de Transcripción</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item">Forms</li>
+        <li class="breadcrumb-item active">Elements</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+
+<div class="container"></div>
+    <div class="row">
+          <div class="col-12">
+            <!-- SUBIR ARCHIVO -->
+            <form method="post" class="form-signin" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <input type="file" name="myfile" required>
+                <button type="submit" class="btn btn-primary"> <i class="bi bi-cassette-fill"></i> Subir Archivo</button>
+                <div class="loader" id="loader" style="display:none;"></div>
+                  <span class="visually-hidden">Loading...</span>
+                </div>  
+             </form>
+              {% if uploaded_file_url %}
+              <form method="post" class="form-signin" enctype="multipart/form-data"></form>
+                <!-- <p> Archivo subido en: <a href ="{{uploaded_file_url}}">{{ uploaded_file_url}}</a></p> -->
+                <!-- FIN SUBIR ARCHIVO -->
+                <h5 class="card-title">Se subio el siguiente archivo</h5>
+                <audio class="w-100" id="plyr-audio-player" controls>
+                  <source src="{{uploaded_file_url}}">type="audio/mp3" />
+                </audio>
+                <section class="section">
+                  <div class="row">
+                    <div class="col-lg-15">
+                      <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">Compelete la siguiente Información Básica</h5>
+                          <p>Rellene todos los campos del formulario para ir al siguiente paso.</p>
+            
+                          <!-- Browser Default Validation -->
+                          <form class="row g-3">
+                            <div class="col-md-4">
+                              <label for="inputDate" class="col-sm-2 col-form-label">Fecha</label>
+                              <div class="col-sm-10">
+                                <input type="date" name="date_transcript" class="form-control"   required>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <label for="validationDefault02" class="form-label">Número de ID</label>
+                              <input type="text" name="number_proces_transcript"  class="form-control" id="validationDefault02" placeholder="124565436546543654" required>
+                            </div>
+                            <div class="col-md-4">
+                              <label for="validationDefaultUsername" class="form-label">Proceso</label>
+                              <div class="input-group">
+                                <span class="input-group-text" id="inputGroupPrepend2"></span>
+                                <input type="text" name="name_transcript" class="form-control" id="validationDefaultUsername" placeholder="Demandante - Demandado" required>
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <label for="validationDefault04" class="form-label">Etapa</label>
+                              <select class="form-select" id="validationDefault04" required>
+                                <option selected>Seleccione una Etapa</option>
+                                <option value="1">Prejuridico</option>
+                                <option value="2">Juridico</option>
+                                <option value="3">Administrativo</option>
+                              </select>
+                            </div>
+                            <div class="col-md-8">
+                              <label for="inputPassword" class="col-sm-2 col-form-label">Observaciones</label>
+                              <div class="col-sm-10">
+                                <textarea class="form-control" name="date_transcript" style="height: 100px"></textarea>
+                              </div>
+                            </div>
+                            
+                            <!--  Modal de Procesamiento -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#largeModal">
+                              Procesar la Transcripción
+                            </button>
+
+                            <div class="modal fade" id="largeModal" tabindex="-1">
+                              <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title">Confirmación del Proceso</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    Esta seguro que dese realizar el proceso de transcripción?
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary"><i class="bi bi-soundwave"></i> Procesar</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div><!-- End Modal de Procesamiento -->
+                          </form>
+                          <!-- End Browser Default Validation -->
+            
+                        </div>
+                      </div>
+            
+                    </div>
+            
+            
+                  </div>
+                </section>
+              {% endif %}
+            </form>
+           
+          </div> 
+    </div>
+    
+
+    
+        <!-- Smart Wizard -->
+        
+</div>
+                   <!-- End SmartWizard Content -->
+{% endblock %}                   

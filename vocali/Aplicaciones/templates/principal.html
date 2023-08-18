@@ -1,0 +1,111 @@
+{% extends 'index_master.html' %}
+{% block content %}
+
+    <div class="pagetitle">
+      <h1>Welcome, {{user.first_name}} {{user.username}} </h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item">Pages</li>
+          <li class="breadcrumb-item active">principal</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-6">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Últimas Transcripciones</h5>
+              <a href="{% url 'upload_file' %}" class="btn btn-primary">
+                <i class="bi bi-soundwave"></i> Nueva Transcripción
+            </a>
+            
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Número de ID</th>
+                    <th scope="col">Nombre/Tipo</th>
+                    <th scope="col">Duración</th>
+                    <th scope="col">Fecha</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>12345678913456789</td>
+                    <td>Andrade - Lopez AUDIENCIA</td>
+                    <td>28:00</td>
+                    <td>2016-05-25</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>123456789134533333</td>
+                    <td>Gonzalez - Arboleda Audio</td>
+                    <td>3:15</td>
+                    <td>2014-12-05</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>1234567891345333444</td>
+                    <td>Compensar - Rama Judicial</td>
+                    <td>45:30</td>
+                    <td>2011-08-12</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">4</th>
+                    <td>1234567891345333444</td>
+                    <td>Rama Judicial - Cundinamarca</td>
+                    <td>34:45</td>
+                    <td>2012-06-11</td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Carpetas</h5>
+              <ul class="list-group">
+                {% for folder in user_folders %}
+                  <li class="list-group-item">
+                    <a href="{% url 'folder_detail' folder.id %}">
+                      <i class="bi bi-folder"></i>
+                      {{ folder.name }}
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    {% endblock %}

@@ -1,0 +1,114 @@
+{% extends 'index_master.html' %}
+
+{% block content %}
+<div class="page-content">
+    <div class="wizard-v3-content">
+        <div class="wizard-form">
+            <div class="wizard-header">
+                <h3 class="heading">Proceso Nueva Transcripción</h3>
+                <p>Rellene todos los campos del formulario para ir al siguiente paso</p>
+            </div>
+            <form class="form-register" method="post" enctype="multipart/form-data">
+                <div id="form-total">
+                    <!-- SECTION 1 -->
+                    <h2>
+                        <span class="step-icon"><i class="zmdi zmdi-account"></i></span>
+                        <span class="step-text">Archivo</span>
+                    </h2>
+					<!-- -->
+                     <section > 
+                         <div class="inner">
+                            <div class="row">
+                                <div class="col-12">
+                                    {% csrf_token %} 
+                                    <input type="file" name="myfile">
+                                    <button type="submit" class="btn btn-primary"> <i class="bi bi-soundwave"></i>Upload</button>
+                                    
+                                    {% if uploaded_file_url %}
+                                    <p> Archivo subido en: <a href="{{uploaded_file_url}}">{{ uploaded_file_url }}</a></p>
+                                    {% endif %}
+                                </div>
+                            </div>
+							<audio class="w-100" id="plyr-audio-player" controls>
+								<source src="./assets/audio/Water_Lily.mp3" type="audio/mp3" />
+							  </audio>
+                         </div> 
+                    </section>
+
+                    <!-- SECTION 2 -->
+                    <h2>
+                        <span class="step-icon"><i class="zmdi zmdi-lock"></i></span>
+                        <span class="step-text">Descripción</span>
+                    </h2>
+                    <section>
+                        <div class="inner">
+                            <div class="form-row">
+                                <div class="form-holder">
+                                    <label class="form-row-inner">
+                                        <input type="date" class="form-control" id="date_transcript" name="date_transcript" required>
+                                        <span class="label">Fecha Transcripción*</span>
+                                        <span class="border"></span>
+                                    </label>
+                                </div>
+                                <div class="form-holder">
+                                    <label class="form-row-inner">
+                                        <input type="text" class="form-control" id="number_proces_transcript" name="number_proces_transcript" required>
+                                        <span class="label">Número de ID*</span>
+                                        <span class="border"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-row">
+                                <div class="form-holder form-holder-1">
+                                    <label class="form-row-inner">
+                                        <input type="text" class="form-control" id="name_transcript" name="name_transcript" placeholder="Demandante - Demandado" required>
+                                        <span class="label">Nombres*</span>
+                                        <span class="border"></span>
+                                    </label>
+                                </div>
+                                <div class="form-holder form-holder-1">
+                                    <label class="form-row-inner">
+                                        <select class="form-select" id="id_etapa_trans_id" name="id_etapa_trans_id">
+                                            <option selected>Seleccione una Etapa</option>
+                                            <option value="1">Prejuridico</option>
+                                            <option value="2">Juridico</option>
+                                            <option value="3">Administrativo</option>
+                                        </select>
+                                        <span class="label">Etapa*</span>
+                                        <span class="border"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-row">
+                                <div class="form-holder form-holder-1">
+                                    <label class="form-row-inner">
+                                        <input class="form-control" style="height: 100px" id="description_transcript" name="description_transcript" placeholder="Descripción del proceso" required>
+                                        <span class="label">Descripción*</span>
+                                        <span class="border"></span>
+                                    </label>
+                                </div>
+                                <div class="form-holder form-holder-1">
+                                    <label class="form-row-inner">
+                                        <input class="form-control" style="height: 100px" id="id_carpeta" name="id_carpeta" placeholder="Número de carpeta" required>
+                                        <span class="label">CARPETAS*</span>
+                                        <span class="border"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <h2>
+                      <span class="step-icon"><i class="zmdi zmdi-account"></i></span>
+                      <span class="step-text">Procesar</span>
+                  </h2>
+                  <section>
+
+                  </section>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
