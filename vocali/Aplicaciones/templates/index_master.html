@@ -74,7 +74,7 @@
     </div><!-- End Logo -->
 
     <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
+      <form class="search-form d-flex align-items-center" method="POST" action="/principal/">
         <input type="text" name="query" placeholder="Search" title="Enter search keyword">
         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
       </form>
@@ -321,55 +321,83 @@
           <span>Nueva Transcripción</span>
         </a>
       </li>
-      <div class="user-folders">
-        <span>Tus Carpetas:</span>
-        <ul class="sidebar-nav">
-            {% for folder in user_folders %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'folder_detail' folder.id %}">
-                        <i class="bi bi-folder"></i>
-                        <span>{{ folder.name }}</span>
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="/wizard">
-          <i class="bi bi-soundwave"></i>
-          <span>Carpetas / Transcripciones</span>
+      <!-- trae las carpetas del usuario -->
+       <div class="user-folders">      
+        <a class="nav-link collapsed">
+            <li class="nav-item">
+              <!-- <a class="nav-link collapsed" href="#"> -->
+                <a class="nav-link collapsed" data-bs-target="#folders" data-bs-toggle="collapse" href="#">
+                  <i class="bi bi-folder"></i><span>Carpetas / Transcripciones</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+              <ul class="sidebar-nav">
+                  {% for folder in top_level_folders %}
+                      <li class="nav-item">
+                          <a class="nav-link " href="{% url 'folder_detail' folder.id %}">
+                              <i class="bi bi-folder"></i>
+                              <span>{{ folder.name }}</span>
+                          </a>
+                          {% with subfolders=folder.folder_set.all %}
+                              {% if subfolders %}
+                                  <ul>
+                                      {% for subfolder in subfolders %}
+                                          <li class="nav-item">
+                                              <a class="nav-link" href="{% url 'folder_detail' subfolder.id %}">
+                                                  <i class="bi bi-folder"></i>
+                                                  <span>{{ subfolder.name }}</span>
+                                              </a>
+                                          </li>
+                                      {% endfor %}
+                                  </ul>
+                              {% endif %}
+                          {% endwith %}
+                      </li>
+                  {% endfor %}
+                  <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#verticalycentered">
+                    <i class="bi bi-folder"></i>
+                    + Crear Carpeta
+                </button>
+              
+              </ul>
+            </li>  
         </a>
-      </li>
-      <!-- End Profile Page Nav -->
+    </div>
+    
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-gear"></i><span>Configuración</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li class="nav-item">
-            <a class="nav-link collapsed" href="/usersprofile">
-              <i class="bi bi-person"></i>
-              <span>Profile</span>
-            </a>
-          </li><!-- End Profile Page Nav -->
-          
-        <li class="nav-item">
-          <a class="nav-link collapsed" href="/pagesfaq">
-            <i class="bi bi-question-circle"></i>
-            <span>F.A.Q</span>
-          </a>
-        </li><!-- End F.A.Q Page Nav -->
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="/usersprofile">
+                <i class="bi bi-person"></i>
+                <span>Profile</span>
+              </a>
+            </li><!-- End Profile Page Nav -->
+            
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="/pagesfaq">
+                <i class="bi bi-question-circle"></i>
+                <span>F.A.Q</span>
+              </a>
+            </li><!-- End F.A.Q Page Nav -->
 
-        <li class="nav-item">
-          <a class="nav-link collapsed" href="/pagescontact">
-            <i class="bi bi-envelope"></i>
-            <span>Contact</span>
-          </a>
-        </li><!-- End Contact Page Nav -->
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="/pagescontact">
+                <i class="bi bi-envelope"></i>
+                <span>Contact</span>
+              </a>
+            </li><!-- End Contact Page Nav -->
         </ul>
       </li><!-- End Components Nav -->
     </ul>
+      {% if messages %}
+          <ul class="messages">
+              {% for message in messages %}
+              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+              {% endfor %}
+          </ul>
+      {% endif %}
 
   </aside><!-- End Sidebar-->
 

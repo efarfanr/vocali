@@ -247,6 +247,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'vocali.urls'
 
+MESSAGE_STORAGE = 'django.contrib.messages.storage.fallback.FallbackStorage'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

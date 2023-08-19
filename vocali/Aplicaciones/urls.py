@@ -19,8 +19,11 @@ urlpatterns = [
     path('pagesfaq/', views.pagesfaq, name='pagesfaq'),
     path('pagescontact/', views.pagescontact, name='pagescontact'),
     path('principal/', views.principal, name='principal'),
+    path('folder/<int:folder_id>/', views.folder_detail, name='folder_detail'),
+    # path('create_folder/', views.create_folder, name='create_folder'),
     path('dashboard/', views.dashboard, name='dashboard'),
-    # path('index_master/', views.index_master, name='index_master'),
+    
+
     path('upload/', views.upload_file, name='upload_file'),
 
     path('api/transcripts/', views.TranscriptListCreateView.as_view(), name='transcript-list-create'),

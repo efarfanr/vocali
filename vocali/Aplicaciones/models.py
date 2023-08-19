@@ -50,6 +50,7 @@ class Folder(models.Model):
     name = models.CharField(max_length=100)
     parent_folder = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
         verbose_name = "Carpeta"

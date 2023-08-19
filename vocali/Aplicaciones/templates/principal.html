@@ -87,25 +87,78 @@
     </section>
 
     <section class="section">
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Carpetas</h5>
-              <ul class="list-group">
-                {% for folder in user_folders %}
-                  <li class="list-group-item">
-                    <a href="{% url 'folder_detail' folder.id %}">
-                      <i class="bi bi-folder"></i>
-                      {{ folder.name }}
-                    </a>
-                  </li>
+      <div class="user-folders">
+        <a class="nav-link collapsed">
+            <!-- <i class="bi bi-folder"></i>
+            <span>Tus CASOS:</span> -->
+
+            <ul class="sidebar-nav">
+                {% for folder in top_level_folders %}
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{% url 'folder_detail' folder.id %}">
+                            <i class="bi bi-folder"></i>
+                            <span>{{ folder.name }}</span>
+                        </a>
+                        {% with subfolders=folder.folder_set.all %}
+                            {% if subfolders %}
+                                <ul>
+                                    {% for subfolder in subfolders %}
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'folder_detail' subfolder.id %}">
+                                                <i class="bi bi-folder"></i>
+                                                <span>{{ subfolder.name }}</span>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        {% endwith %}
+                    </li>
                 {% endfor %}
-              </ul>
-            </div>
+            </ul>
+            <!-- <button type="button" class=" btn btn-light" data-bs-toggle="modal" data-bs-target="#verticalycentered">
+              + Crear Carpeta
+            </button> -->
+        </a>
+    </div>
+    
+    <!-- Botón para abrir la modal -->
+      <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#verticalycentered">
+          <i class="bi bi-folder"></i>
+          + Crear Carpeta
+      </button>
+
+        <!-- Modal para crear carpeta -->
+        <div class="modal fade" id="verticalycentered" tabindex="-1" aria-labelledby="verticalycenteredLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="verticalycenteredLabel">Crear Nueva Carpeta</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <form method="post" action="{% url 'principal' %}">
+                          {% csrf_token %}
+                          <div class="mb-3">
+                              <label for="folderName" class="form-label">Nombre de la Carpeta:</label>
+                              <input type="text" class="form-control" id="folderName" name="folder_name" required>
+                          </div>
+                          <div class="mb-3">
+                              <label for="parentFolder" class="form-label">Carpeta superior (opcional):</label>
+                              <select class="form-control" id="parentFolder" name="parent_folder">
+                                  <option value="">Ninguna</option>
+                                  {% for folder in top_level_folders %}
+                                      <option value="{{ folder.id }}">{{ folder.name }}</option>
+                                  {% endfor %}
+                              </select>
+                          </div>
+                          <button type="submit" class="btn btn-primary">Crear Carpeta</button>
+                      </form>
+                  </div>
+              </div>
           </div>
         </div>
-      </div>
+
     </section>
   
     {% endblock %}

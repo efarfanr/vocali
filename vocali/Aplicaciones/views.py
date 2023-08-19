@@ -17,6 +17,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 from .forms import UploadFileForm, FolderForm
 from .models import UploadedFile
 from django.core.files.storage import FileSystemStorage
+from django.contrib import messages
+
 
 from rest_framework.permissions import IsAuthenticated
 
@@ -73,11 +75,29 @@ def dashboard(request):
 def wizard(request):
     return render(request, "wizard.html")
 
+# @login_required
+# def principal(request):
+#     user = request.user
+#     top_level_folders = Folder.objects.filter(user=user, parent_folder=None)
+#     return render(request, 'principal.html', {'top_level_folders': top_level_folders})
+
 @login_required
 def principal(request):
     user = request.user
-    user_folders = Folder.objects.filter(user=user)
-    return render(request, 'principal.html', {'user_folders': principal})
+    top_level_folders = Folder.objects.filter(user=user, parent_folder=None)
+    if request.method == 'POST':
+        form = FolderForm(request.POST)
+        if form.is_valid():
+            folder = form.save(commit=False)
+            folder.user = request.user
+            folder.save()
+            # Si deseas que el usuario vea un mensaje después de guardar, puedes usar los mensajes de Django.
+            messages.success(request, 'Folder creado exitosamente!')
+            return redirect('principal')
+    else:
+        form = FolderForm()
+    return render(request, 'principal.html', {'form': form, 'top_level_folders': top_level_folders})
+
 
 def create_folder(request):
     if request.method == 'POST':
@@ -89,7 +109,7 @@ def create_folder(request):
             return redirect('principal')
     else:
         form = FolderForm()
-    return render(request, 'create_folder.html', {'form': form})
+    return render(request, 'principal.html', {'form': form})
 
 @login_required
 def folder_detail(request, folder_id):

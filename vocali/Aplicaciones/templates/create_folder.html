@@ -1,0 +1,29 @@
+{% extends 'index_master.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Crear nueva carpeta</h2>
+
+    <form method="post" action="{% url 'create_folder' %}">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="folderName" class="form-label">Nombre de la Carpeta:</label>
+            <input type="text" class="form-control" id="folderName" name="folder_name" required>
+        </div>
+
+        <!-- Si deseas permitir carpetas anidadas, puedes agregar un selector aquí -->
+        <div class="mb-3">
+            <label for="parentFolder" class="form-label">Carpeta superior (opcional):</label>
+            <select class="form-control" id="parentFolder" name="parent_folder">
+                <option value="">Ninguna</option>
+                {% for folder in top_level_folders %}
+                    <option value="{{ folder.id }}">{{ folder.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Crear Carpeta</button>
+    </form>
+</div>
+{% endblock %}
