@@ -1,126 +1,228 @@
+
 {% extends 'index_master.html' %}
 {% block content %}
-
 
 <div class="pagetitle">
     <h1>Proceso de Transcripción</h1>
     <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-        <li class="breadcrumb-item">Forms</li>
-        <li class="breadcrumb-item active">Elements</li>
-      </ol>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/principal/">Home</a></li>
+            <li class="breadcrumb-item">Forms</li>
+            <li class="breadcrumb-item active">Elements</li>
+        </ol>
     </nav>
-  </div><!-- End Page Title -->
+</div><!-- End Page Title -->
 
-
-<div class="container"></div>
+<div class="container">
     <div class="row">
-          <div class="col-12">
+        <div class="col-12">
             <!-- SUBIR ARCHIVO -->
             <form method="post" class="form-signin" enctype="multipart/form-data">
                 {% csrf_token %}
                 
-                <input type="file" name="myfile" required>
-                <button type="submit" class="btn btn-primary"> <i class="bi bi-cassette-fill"></i> Subir Archivo</button>
-                <div class="loader" id="loader" style="display:none;"></div>
-                  <span class="visually-hidden">Loading...</span>
-                </div>  
-             </form>
-              {% if uploaded_file_url %}
-              <form method="post" class="form-signin" enctype="multipart/form-data"></form>
-                <!-- <p> Archivo subido en: <a href ="{{uploaded_file_url}}">{{ uploaded_file_url}}</a></p> -->
-                <!-- FIN SUBIR ARCHIVO -->
-                <h5 class="card-title">Se subio el siguiente archivo</h5>
-                <audio class="w-100" id="plyr-audio-player" controls>
-                  <source src="{{uploaded_file_url}}">type="audio/mp3" />
-                </audio>
-                <section class="section">
-                  <div class="row">
-                    <div class="col-lg-15">
-                      <div class="card">
-                        <div class="card-body">
-                          <h5 class="card-title">Compelete la siguiente Información Básica</h5>
-                          <p>Rellene todos los campos del formulario para ir al siguiente paso.</p>
-            
-                          <!-- Browser Default Validation -->
-                          <form class="row g-3">
-                            <div class="col-md-4">
-                              <label for="inputDate" class="col-sm-2 col-form-label">Fecha</label>
-                              <div class="col-sm-10">
-                                <input type="date" name="date_transcript" class="form-control"   required>
-                              </div>
-                            </div>
-                            <div class="col-md-4">
-                              <label for="validationDefault02" class="form-label">Número de ID</label>
-                              <input type="text" name="number_proces_transcript"  class="form-control" id="validationDefault02" placeholder="124565436546543654" required>
-                            </div>
-                            <div class="col-md-4">
-                              <label for="validationDefaultUsername" class="form-label">Proceso</label>
-                              <div class="input-group">
-                                <span class="input-group-text" id="inputGroupPrepend2"></span>
-                                <input type="text" name="name_transcript" class="form-control" id="validationDefaultUsername" placeholder="Demandante - Demandado" required>
-                              </div>
-                            </div>
-                            <div class="col-md-3">
-                              <label for="validationDefault04" class="form-label">Etapa</label>
-                              <select class="form-select" id="validationDefault04" required>
-                                <option selected>Seleccione una Etapa</option>
-                                <option value="1">Prejuridico</option>
-                                <option value="2">Juridico</option>
-                                <option value="3">Administrativo</option>
-                              </select>
-                            </div>
-                            <div class="col-md-8">
-                              <label for="inputPassword" class="col-sm-2 col-form-label">Observaciones</label>
-                              <div class="col-sm-10">
-                                <textarea class="form-control" name="date_transcript" style="height: 100px"></textarea>
-                              </div>
-                            </div>
-                            
-                            <!--  Modal de Procesamiento -->
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#largeModal">
-                              Procesar la Transcripción
-                            </button>
+                <!-- <input type="file" name="audio_file" required> -->
+                <input type="file" name="audio_video_file" id="mediaInput" accept="audio/*,video/*" required onChange="previewMedia();">
+                <audio class="w-100" id="audioPlayer" controls style="display:none;"></audio>
+                <video class="fixed-size-video" id="videoPlayer" controls style="display:none;"></video>
+                <!-- Se muestra el reproductor solo si hay un archivo cargado -->
+                {% if uploaded_file_url %}
+                    <h5 class="card-title">Se subió el siguiente archivo</h5>
+                    <audio class="w-100" id="plyr-audio-player" controls>
+                        <source src="{{uploaded_file_url}}" type="audio/mp3" />
+                    </audio>
+                {% endif %}
 
-                            <div class="modal fade" id="largeModal" tabindex="-1">
-                              <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <h5 class="modal-title">Confirmación del Proceso</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                  </div>
-                                  <div class="modal-body">
-                                    Esta seguro que dese realizar el proceso de transcripción?
-                                  </div>
-                                  <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="submit" class="btn btn-primary"><i class="bi bi-soundwave"></i> Procesar</button>
-                                  </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Compelete la siguiente Información Básica</h5>
+                        <p>Rellene todos los campos del formulario para ir al siguiente paso.</p>
+            
+                        <!-- Browser Default Validation -->
+                          <div class="col-md-4">
+                            <label for="inputDate" class="col-sm-2 col-form-label">Fecha</label>
+                            <div class="col-sm-10">
+                              <input type="date" name="date_transcript" class="form-control"   required>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <label for="validationDefault02" class="form-label">Número de ID</label>
+                            <input type="text" name="number_proces_transcript"  class="form-control" id="number_proces_transcript" placeholder="124565436546543654" required>
+                          </div>
+                          <div class="col-md-4">
+                            <label for="name_transcript" class="form-label">Proceso</label>
+                            <div class="input-group">
+                              <span class="input-group-text" id="inputGroupPrepend2"></span>
+                              <input type="text" name="name_transcript" class="form-control" id="name_transcript" placeholder="Demandante - Demandado" required>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label for="id_etapa_trans" class="form-label">Etapa</label>
+                            <select class="form-select" id="id_etapa_trans" required>
+                                <option selected>Seleccione una Etapa</option>
+                            </select>
+                          </div>
+                          <!-- Botón para abrir la modal -->
+                              <div class="col-md-8">
+                                <label for="description_transcript" class="col-sm-2 col-form-label">Observaciones</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" name="description_transcript" style="height: 100px"></textarea>
                                 </div>
                               </div>
-                            </div><!-- End Modal de Procesamiento -->
-                          </form>
-                          <!-- End Browser Default Validation -->
-            
+                              <div class="col-md-12">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#verticalycentered">Procesar la Transcripción</button>
+                              </div>
+                              <div class="modal fade" id="verticalycentered" tabindex="-1" aria-labelledby="verticalycenteredLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Confirmación del Proceso</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            ¿Está seguro que desea realizar el proceso de transcripción?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="submit" class="btn btn-primary"><i class="bi bi-soundwave"></i> Procesar</button>
+                                        </div>   
+                                    </div>
+                                </div>
+                              </div>
                         </div>
+                                         
                       </div>
-            
-                    </div>
-            
-            
-                  </div>
-                </section>
-              {% endif %}
+                   </div>
+                </div>
             </form>
-           
-          </div> 
+        </div> 
     </div>
-    
-
-    
-        <!-- Smart Wizard -->
-        
 </div>
-                   <!-- End SmartWizard Content -->
-{% endblock %}                   
+<!-- SCRIPT DEL FORMULARIO-->
+<script>
+  
+   fetch('/api/etapas/')
+        .then(response => response.json())
+        .then(data => {
+            const select = document.getElementById('id_etapa_trans');
+            data.forEach(etapa => {
+                const option = document.createElement('option');
+                option.value = etapa.id_etapa_trans;
+                option.textContent = etapa.etapa_name;
+                select.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+    // Después de cargar el contenido de la ventana modal
+    document.addEventListener('DOMContentLoaded', function () {
+        const addEtapaForm = document.getElementById('addEtapaForm');
+        const addEtapaBtn = document.getElementById('addEtapaBtn');
+        const etapaNameInput = document.getElementById('etapaName');
+        const selectEtapa = document.getElementById('id_etapa_trans');
+
+        addEtapaBtn.addEventListener('click', function () {
+            const newEtapaName = etapaNameInput.value;
+
+            if (newEtapaName) {
+                // Enviar la nueva etapa al servidor (API) y obtener su ID
+                fetch('/api/etapas/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Token tu_token_de_autenticacion',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    },
+                    body: JSON.stringify({ etapa_name: newEtapaName })
+                })
+                .then(response => response.json())
+                .then(newEtapa => {
+                    // Agregar la nueva etapa al campo de selección
+                    const newOption = document.createElement('option');
+                    newOption.value = newEtapa.id_etapa_trans;
+                    newOption.textContent = newEtapa.etapa_name;
+                    selectEtapa.appendChild(newOption);
+
+                    // Cerrar la ventana modal
+                    const addEtapaModal = new bootstrap.Modal(document.getElementById('addEtapaModal'));
+                    addEtapaModal.hide();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Hubo un error al agregar la nueva etapa. Por favor, inténtalo de nuevo.');
+                });
+            }
+        });
+    });
+
+
+
+    document.querySelector('form').addEventListener('submit', function(e) {
+          e.preventDefault();
+
+          const formData = new FormData(this);
+
+          // Ocultar reproductor preliminar de audio y video
+          const audioPlayer = document.getElementById('audioPlayer');
+          const videoPlayer = document.getElementById('videoPlayer');
+          audioPlayer.style.display = 'none';
+          videoPlayer.style.display = 'none';
+
+          // Mostrar archivo cargado
+          const plyrAudioPlayer = document.getElementById('plyr-audio-player');
+          plyrAudioPlayer.style.display = 'block';
+
+          fetch('/api/transcripts/', {
+              method: 'POST',
+              headers: {
+                  'Authorization': 'Token tu_token_de_autenticacion', // Si estás usando Token authentication
+                  'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+              },
+              body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.id) {
+                window.location.replace("/transcript/"); // Redirige al formulario TRANSCRIPT.
+              } else {
+                  alert('Hubo un error al guardar la información. Por favor, inténtalo de nuevo.');
+              }
+          })
+          .catch(error => {
+              console.error('Error:', error);
+              alert('Hubo un error al guardar la información. Por favor, inténtalo de nuevo.');
+          });
+     });
+
+  
+
+    function previewMedia() {
+        const mediaInput = document.getElementById('mediaInput');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const videoPlayer = document.getElementById('videoPlayer');
+
+        if (mediaInput.files && mediaInput.files[0]) {
+            const fileType = mediaInput.files[0].type;
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                if (fileType.startsWith('audio/')) {
+                    audioPlayer.src = e.target.result;
+                    audioPlayer.style.display = 'block';
+                    videoPlayer.style.display = 'none';
+                } else if (fileType.startsWith('video/')) {
+                    videoPlayer.src = e.target.result;
+                    videoPlayer.style.display = 'block';
+                    audioPlayer.style.display = 'none';
+                }
+            }
+
+            reader.readAsDataURL(mediaInput.files[0]);
+        }
+    }
+  </script>
+  
+
+{% endblock %}
+

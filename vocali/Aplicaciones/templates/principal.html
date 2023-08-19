@@ -5,7 +5,7 @@
       <h1>Welcome, {{user.first_name}} {{user.username}} </h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item"><a href="/principal/">Home</a></li>
           <li class="breadcrumb-item">Pages</li>
           <li class="breadcrumb-item active">principal</li>
         </ol>
@@ -116,49 +116,54 @@
                     </li>
                 {% endfor %}
             </ul>
-            <!-- <button type="button" class=" btn btn-light" data-bs-toggle="modal" data-bs-target="#verticalycentered">
-              + Crear Carpeta
-            </button> -->
         </a>
-    </div>
+      </div>
     
-    <!-- Botón para abrir la modal -->
-      <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#verticalycentered">
-          <i class="bi bi-folder"></i>
-          + Crear Carpeta
-      </button>
+        <!-- Botón para abrir la modal -->
+          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#verticalycentered">
+              <i class="bi bi-folder"></i>
+              + Crear Carpeta
+          </button>
 
-        <!-- Modal para crear carpeta -->
-        <div class="modal fade" id="verticalycentered" tabindex="-1" aria-labelledby="verticalycenteredLabel" aria-hidden="true">
-          <div class="modal-dialog">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <h5 class="modal-title" id="verticalycenteredLabel">Crear Nueva Carpeta</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                      <form method="post" action="{% url 'principal' %}">
-                          {% csrf_token %}
-                          <div class="mb-3">
-                              <label for="folderName" class="form-label">Nombre de la Carpeta:</label>
-                              <input type="text" class="form-control" id="folderName" name="folder_name" required>
-                          </div>
-                          <div class="mb-3">
-                              <label for="parentFolder" class="form-label">Carpeta superior (opcional):</label>
-                              <select class="form-control" id="parentFolder" name="parent_folder">
-                                  <option value="">Ninguna</option>
-                                  {% for folder in top_level_folders %}
-                                      <option value="{{ folder.id }}">{{ folder.name }}</option>
-                                  {% endfor %}
-                              </select>
-                          </div>
-                          <button type="submit" class="btn btn-primary">Crear Carpeta</button>
-                      </form>
+            <!-- Modal para crear carpeta -->
+            <div class="modal fade" id="verticalycentered" tabindex="-1" aria-labelledby="verticalycenteredLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="verticalycenteredLabel">Crear Nueva Carpeta</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          <form method="post" action="{% url 'principal' %}">
+                              {% csrf_token %}
+                              <div class="mb-3">
+                                  <label for="folderName" class="form-label">Nombre de la Carpeta:</label>
+                                  <input type="text" class="form-control" id="folderName" name="name" required>
+                              </div>
+                              <div class="mb-3">
+                                  <label for="parentFolder" class="form-label">Carpeta superior (opcional):</label>
+                                  <select class="form-control" id="parentFolder" name="parent_folder">
+                                      <option value="">Ninguna</option>
+                                      {% for folder in top_level_folders %}
+                                          <option value="{{ folder.id }}">{{ folder.name }}</option>
+                                      {% endfor %}
+                                  </select>
+                              </div>
+                              <button type="submit" class="btn btn-primary">Crear Carpeta</button>
+                          </form>
+                      </div>
                   </div>
               </div>
-          </div>
-        </div>
-
+            </div>
+    
+          
+        {% if messages %}
+          <ul class="messages">
+              {% for message in messages %}
+              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+              {% endfor %}
+          </ul>
+        {% endif %}
     </section>
   
     {% endblock %}

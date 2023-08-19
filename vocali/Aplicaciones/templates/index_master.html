@@ -28,7 +28,13 @@
   <link href="/static/css2/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
   <link href="/static/css2/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="/static/css2/assets/vendor/simple-datatables/style.css" rel="stylesheet">
-  
+  <style>
+    .fixed-size-video {
+        width: 50vw;  /* Ocupará el 50% del ancho de la ventana del navegador */
+        height: 28.125vw;  /* Mantiene la relación de aspecto 16:9 */
+        object-fit: cover;
+    }
+</style>
 <!-- Wizard -->
   	<!--     Fonts and icons     -->
     <!-- <link href="http://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.css" rel="stylesheet"> -->
@@ -305,15 +311,19 @@
   <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
-
       <li class="nav-item">
         <a class="nav-link collapsed" href="/dashboard">
           <i class="bi bi-grid"></i>
           <span>Dashboard2</span>
         </a>
       </li><!-- End Dashboard Nav -->
-      
-      <li class="nav-heading">Pages</li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/principal">
+          <span>Panel</span>
+        </a>
+      </li>
+
+      <li class="nav-heading">Opciones del Usuario</li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="/upload">
@@ -322,14 +332,15 @@
         </a>
       </li>
       <!-- trae las carpetas del usuario -->
-       <div class="user-folders">      
+      <div class="user-folders">      
         <a class="nav-link collapsed">
             <li class="nav-item">
               <!-- <a class="nav-link collapsed" href="#"> -->
                 <a class="nav-link collapsed" data-bs-target="#folders" data-bs-toggle="collapse" href="#">
                   <i class="bi bi-folder"></i><span>Carpetas / Transcripciones</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
-              <ul class="sidebar-nav">
+              <!-- <ul class="sidebar-nav"> -->
+              <ul id="folders" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                   {% for folder in top_level_folders %}
                       <li class="nav-item">
                           <a class="nav-link " href="{% url 'folder_detail' folder.id %}">
@@ -360,44 +371,40 @@
               </ul>
             </li>  
         </a>
-    </div>
-    
+      </div>
+      <!-- Fin de las carpetas del usuario -->
+      <!-- Configuración del usuario -->
+      <div class="user-config">      
+        <li class="nav-item">
+          <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-gear"></i><span>Configuración</span><i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+              <li class="nav-item">
+                <a class="nav-link collapsed" href="/usersprofile">
+                  <i class="bi bi-person"></i>
+                  <span>Profile</span>
+                </a>
+              </li><!-- End Profile Page Nav -->
+              
+              <li class="nav-item">
+                <a class="nav-link collapsed" href="/pagesfaq">
+                  <i class="bi bi-question-circle"></i>
+                  <span>F.A.Q</span>
+                </a>
+              </li><!-- End F.A.Q Page Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-gear"></i><span>Configuración</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-            <li class="nav-item">
-              <a class="nav-link collapsed" href="/usersprofile">
-                <i class="bi bi-person"></i>
-                <span>Profile</span>
-              </a>
-            </li><!-- End Profile Page Nav -->
-            
-            <li class="nav-item">
-              <a class="nav-link collapsed" href="/pagesfaq">
-                <i class="bi bi-question-circle"></i>
-                <span>F.A.Q</span>
-              </a>
-            </li><!-- End F.A.Q Page Nav -->
-
-            <li class="nav-item">
-              <a class="nav-link collapsed" href="/pagescontact">
-                <i class="bi bi-envelope"></i>
-                <span>Contact</span>
-              </a>
-            </li><!-- End Contact Page Nav -->
-        </ul>
-      </li><!-- End Components Nav -->
-    </ul>
-      {% if messages %}
-          <ul class="messages">
-              {% for message in messages %}
-              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-              {% endfor %}
+              <li class="nav-item">
+                <a class="nav-link collapsed" href="/pagescontact">
+                  <i class="bi bi-envelope"></i>
+                  <span>Contact</span>
+                </a>
+              </li><!-- End Contact Page Nav -->
           </ul>
-      {% endif %}
+        </li><!-- Fin configuración del usuario -->
+      </div>
+    </ul>
+
 
   </aside><!-- End Sidebar-->
 

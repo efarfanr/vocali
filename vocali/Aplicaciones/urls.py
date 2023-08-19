@@ -28,6 +28,8 @@ urlpatterns = [
 
     path('api/transcripts/', views.TranscriptListCreateView.as_view(), name='transcript-list-create'),
     path('api/transcripts/<int:pk>/', views.TranscriptRetrieveUpdateDestroyView.as_view(), name='transcript-detail'),
+    path('api/etapas/', views.EtapaListCreateView.as_view(), name='etapa-list-create'),
+    path('api/etapas/<int:pk>/', views.EtapaRetrieveUpdateDestroyView.as_view(), name='etapa-detail'),
 
     # ... Rutas de las paginas del aplicativo
     ]

@@ -25,7 +25,7 @@ from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 # Import all models.
 from .models import *
-from .serializers import TranscriptSerializer
+from .serializers import TranscriptSerializer, EtapaSerializer
 # Importa locale y establece la configuración regional
 import locale
 import json
@@ -139,8 +139,8 @@ def profile_view(request):
 
 @login_required
 def upload_file(request):
-    if request.method == 'POST' and request.FILES['myfile']:
-        myfile = request.FILES['myfile']
+    if request.method == 'POST' and request.FILES['audio_video_file']:
+        myfile = request.FILES['audio_video_file']
 
         uploaded_file_instance = UploadedFile(file=myfile)
         uploaded_file_instance.save()
@@ -148,6 +148,14 @@ def upload_file(request):
         uploaded_file_url = uploaded_file_instance.file.url
         return render(request, 'upload.html', {'uploaded_file_url': uploaded_file_url})
     return render(request, 'upload.html')
+
+class EtapaListCreateView(generics.ListCreateAPIView):
+    queryset = tEtapas_trans.objects.all()
+    serializer_class = EtapaSerializer
+
+class EtapaRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = tEtapas_trans.objects.all()
+    serializer_class = EtapaSerializer
 
 class TranscriptListCreateView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]

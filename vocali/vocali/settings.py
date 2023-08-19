@@ -247,7 +247,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'vocali.urls'
 
-MESSAGE_STORAGE = 'django.contrib.messages.storage.fallback.FallbackStorage'
+# MESSAGE_STORAGE = 'django.contrib.messages.storage.fallback.FallbackStorage'
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+FILE_UPLOAD_MAX_MEMORY_SIZE = 300 * 1024 * 1024  # para 300 MB
+
+
 
 TEMPLATES = [
     {

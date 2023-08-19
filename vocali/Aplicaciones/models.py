@@ -22,7 +22,7 @@ class company(models.Model):
         verbose_name_plural = "Empresas"
         
     def __str__(self):
-        return self.company_nom  # Mostrar el nombre de la empresa en lugar de "object (x)"
+        return self.company_name  # Mostrar el nombre de la empresa en lugar de "object (x)"
 
     
     # def __str__(self):
@@ -179,6 +179,10 @@ class tPerson(models.Model):
     def __str__(self):
         return self.name_person 
 
+# models File upload.
+class UploadedFile(models.Model):
+    file = models.FileField(upload_to='upload/')
+
 # Speaker esta tabla el objetivo de asociar una persona con una transcripción y aquí se le agrega cual es el rol dentro de la transcripción
 class tSpeaker_trans(models.Model): 
     id_spk_trans = models.AutoField(primary_key=True)
@@ -188,6 +192,7 @@ class tSpeaker_trans(models.Model):
     id_person = models.OneToOneField(tPerson, on_delete=models.CASCADE)
     id_roles_trans = models.OneToOneField(tRoles_trans, on_delete=models.CASCADE)
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+    uploaded_file = models.ForeignKey(UploadedFile, on_delete=models.CASCADE, null=True, blank=True, related_name="transcripts")
     enable = models.BooleanField(default=False)
     date_update = models.DateTimeField(auto_now=True)
 
@@ -198,7 +203,4 @@ class tSpeaker_trans(models.Model):
     def __str__(self):
         return self.name_spk_trans 
 
-# models File upload.
-class UploadedFile(models.Model):
-    file = models.FileField(upload_to='upload/')
 

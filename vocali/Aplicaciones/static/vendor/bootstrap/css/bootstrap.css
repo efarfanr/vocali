@@ -8182,4 +8182,10 @@ a.text-dark:focus, a.text-dark:hover {
 .invisible {
   visibility: hidden !important;
 }
+
+.fixed-size-video {
+  width: 50vw;  /* Ocupará el 50% del ancho de la ventana del navegador */
+  height: 28.125vw;  /* Mantiene la relación de aspecto 16:9 */
+  object-fit: cover;
+}
 /*# sourceMappingURL=bootstrap.css.map */
