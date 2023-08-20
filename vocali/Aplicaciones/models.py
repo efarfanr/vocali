@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model
 
 # Create your models here.
 
-class company(models.Model):
+class Company(models.Model):
     company_id = models.AutoField(primary_key=True)
     company_nit = models.CharField(max_length=15,blank=True, null=True)
     company_name = models.CharField(max_length=50,blank=True, null=True)
@@ -22,7 +22,7 @@ class company(models.Model):
         verbose_name_plural = "Empresas"
         
     def __str__(self):
-        return self.company_name  # Mostrar el nombre de la empresa en lugar de "object (x)"
+     return str(self.company_id) # Mostrar el nombre de la empresa en lugar de "object (x)"
 
     
     # def __str__(self):
@@ -31,7 +31,7 @@ class company(models.Model):
 class Usr_company(models.Model):
     usr_company_id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    company_id = models.ForeignKey(company, on_delete=models.CASCADE, null=True)
+    company_id = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
     usr_mobile = models.CharField(max_length=15,blank=True, null=True)
     enable = models.BooleanField(default=False)
     date_update = models.DateTimeField(auto_now=True)

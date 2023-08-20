@@ -19,13 +19,14 @@ from .models import UploadedFile
 from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
 
-
+from django.views.generic import ListView, CreateView
 from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 # Import all models.
 from .models import *
-from .serializers import TranscriptSerializer, EtapaSerializer
+# Import all serializers.
+from .serializers import *
 # Importa locale y establece la configuración regional
 import locale
 import json
@@ -49,6 +50,8 @@ def login_view(request):
 #     'os.path.joins(BASE_DIR, "templates")'
 #     )
 
+
+
 def index(request):
     return render(request, "index.html")
 
@@ -68,8 +71,6 @@ def pagescontact(request):
 @login_required
 def dashboard(request):
     return render(request, "dashboard.html")
-
-
 
 @login_required
 def wizard(request):
@@ -118,7 +119,7 @@ def folder_detail(request, folder_id):
 
 @login_required
 def contact_view(request):
-    # ... tu lógica para mostrar el perfil del usuario ...
+    
     return render(request, 'contact.html')
 
 
@@ -149,23 +150,125 @@ def upload_file(request):
         return render(request, 'upload.html', {'uploaded_file_url': uploaded_file_url})
     return render(request, 'upload.html')
 
-class EtapaListCreateView(generics.ListCreateAPIView):
+@login_required
+def tType_identity_view(request):
+    type_identities = tType_identity.objects.all()
+    return render(request, 'type_identity.html', {'type_identities': type_identities})
+
+@login_required
+def tLanguage_view(request):
+    languages = tLanguage.objects.all()
+    return render(request, 'language.html', {'languages': languages})
+
+@login_required
+def company_view(request):
+    companies = Company.objects.all()
+    return render(request, 'company.html', {'companies': companies})
+
+@login_required
+def usr_company_view(request):
+    usr_companies = Usr_company.objects.all()
+    return render(request, 'usr_company.html', {'usr_companies': usr_companies})
+
+@login_required
+def folder_view(request):
+    folders = Folder.objects.all()
+    return render(request, 'folder.html', {'folders': folders})
+
+class CompanyListCreateView(generics.ListCreateAPIView):
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
+
+class CompanyRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
+
+class Usr_companyListCreateView(generics.ListCreateAPIView):
+    queryset = Usr_company.objects.all()
+    serializer_class = Usr_companySerializer
+
+class Usr_companyRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Usr_company.objects.all()
+    serializer_class = Usr_companySerializer
+
+class FolderListCreateView(generics.ListCreateAPIView):
+    queryset = Folder.objects.all()
+    serializer_class = FolderSerializer
+
+class FolderRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Folder.objects.all()
+    serializer_class = FolderSerializer
+
+class tType_identityListCreateView(generics.ListCreateAPIView):
+    queryset = tType_identity.objects.all()
+    serializer_class = tType_identitySerializer
+
+class tType_identityRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = tType_identity.objects.all()
+    serializer_class = tType_identitySerializer
+
+class tLanguageListCreateView(generics.ListCreateAPIView):
+    queryset = tLanguage.objects.all()
+    serializer_class = tLanguageSerializer
+
+class tLanguageRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = tLanguage.objects.all()
+    serializer_class = tLanguageSerializer
+
+class tRoles_transListCreateView(generics.ListCreateAPIView):
+    queryset = tRoles_trans.objects.all()
+    serializer_class = tRoles_transSerializer
+
+class tRoles_transRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = tRoles_trans.objects.all()
+    serializer_class = tRoles_transSerializer
+
+class tEtapas_transListCreateView(generics.ListCreateAPIView):
     queryset = tEtapas_trans.objects.all()
-    serializer_class = EtapaSerializer
+    serializer_class = tEtapas_transSerializer    
 
-class EtapaRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+class tEtapas_transRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = tEtapas_trans.objects.all()
-    serializer_class = EtapaSerializer
+    serializer_class = tEtapas_transSerializer    
 
-class TranscriptListCreateView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+class tJson_transListCreateView(generics.ListCreateAPIView):
+    queryset = tJson_trans.objects.all()
+    serializer_class = tJson_transSerializer   
+
+class tjSon_transRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = tJson_trans.objects.all()
+    serializer_class = tJson_transSerializer
+
+class tTranscriptListCreateView(generics.ListCreateAPIView):
     queryset = tTranscript.objects.all()
-    serializer_class = TranscriptSerializer
+    serializer_class = tTranscriptSerializer
 
-class TranscriptRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated]
+class tTranscriptRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = tTranscript.objects.all()
-    serializer_class = TranscriptSerializer
+    serializer_class = tTranscriptSerializer
 
+class tPersonListCreateView(generics.ListCreateAPIView):
+    queryset = tPerson.objects.all()
+    serializer_class = tPersonSerializer
+
+class tPersonRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = tPerson.objects.all()
+    serializer_class = tPersonSerializer
+
+class UploadedFileListCreateView(generics.ListCreateAPIView):
+    queryset = UploadedFile.objects.all()
+    serializer_class = UploadedFileSerializer
+
+class UploadedFileRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = UploadedFile.objects.all()
+    serializer_class = UploadedFileSerializer
+
+class tSpeaker_transListCreateView(generics.ListCreateAPIView):
+    queryset = tSpeaker_trans.objects.all()
+    serializer_class = tSpeaker_transSerializer
+
+class tSpeaker_transRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = tSpeaker_trans.objects.all()
+    serializer_class = tSpeaker_transSerializer
 
 

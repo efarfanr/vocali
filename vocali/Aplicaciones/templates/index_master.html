@@ -18,8 +18,10 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
   <!-- Vendor CSS Files -->
   <link href="/static/css2/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="/static/css2/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
@@ -30,32 +32,34 @@
   <link href="/static/css2/assets/vendor/simple-datatables/style.css" rel="stylesheet">
   <style>
     .fixed-size-video {
-        width: 50vw;  /* Ocupará el 50% del ancho de la ventana del navegador */
-        height: 28.125vw;  /* Mantiene la relación de aspecto 16:9 */
-        object-fit: cover;
+      width: 50vw;
+      /* Ocupará el 50% del ancho de la ventana del navegador */
+      height: 28.125vw;
+      /* Mantiene la relación de aspecto 16:9 */
+      object-fit: cover;
     }
-</style>
-<!-- Wizard -->
-  	<!--     Fonts and icons     -->
-    <!-- <link href="http://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.css" rel="stylesheet"> -->
-    <!-- CSS Files -->
-    
-    <!-- <link href="/static/css2/assets/css/bootstrapwizard.min.css" rel="stylesheet" /> -->
-    <!-- <link href="/static/css2/assets/css/gsdk-bootstrap-wizard.css" rel="stylesheet"> -->
-<!-- FIN WIZARD-->
+  </style>
+  <!-- Wizard -->
+  <!--     Fonts and icons     -->
+  <!-- <link href="http://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.css" rel="stylesheet"> -->
+  <!-- CSS Files -->
+
+  <!-- <link href="/static/css2/assets/css/bootstrapwizard.min.css" rel="stylesheet" /> -->
+  <!-- <link href="/static/css2/assets/css/gsdk-bootstrap-wizard.css" rel="stylesheet"> -->
+  <!-- FIN WIZARD-->
 
   <!-- Template Main CSS File -->
   <link href="/static/css2/assets/css/style.css" rel="stylesheet">
-  
- <!-- Custom Theme Style -->
-  
-	<!-- Mobile Specific Metas -->
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<!-- Font-->
-	<link rel="stylesheet" type="text/css" href="/static/css2/assets/css/roboto-font.css">
-	<!-- <link rel="stylesheet" type="text/css" href="/static/css2/assets/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css"> -->
-	<!-- datepicker -->
-	<link rel="stylesheet" type="text/css" href="/static/css2/assets/css/jquery-ui.min.css">
+
+  <!-- Custom Theme Style -->
+
+  <!-- Mobile Specific Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- Font-->
+  <link rel="stylesheet" type="text/css" href="/static/css2/assets/css/roboto-font.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/static/css2/assets/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css"> -->
+  <!-- datepicker -->
+  <link rel="stylesheet" type="text/css" href="/static/css2/assets/css/jquery-ui.min.css">
 
 
   <!-- =======================================================
@@ -243,62 +247,62 @@
             <span class="d-none d-md-block dropdown-toggle ps-2">{{user.first_name}} {{user.username}}</span>
           </a><!-- End Profile Iamge Icon -->
           {% if user.is_authenticated %}
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-              <li class="dropdown-header">
-                <h6>Welcome, {{user.first_name}} {{user.username}} </h6>
-                <span>Company: {{ usr_company.company_id.company_name }}</span>
-              </li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>Welcome, {{user.first_name}} {{user.username}} </h6>
+              <span>Company: {{ usr_company.company_id.company_name }}</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
 
-              <li>
-                <a class="dropdown-item d-flex align-items-center" href="/usersprofile.html">
-                  <i class="bi bi-person"></i>
-                  <span>My Profile</span>
-                </a>
-              </li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/usersprofile.html">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
 
-              <li>
-                <a class="dropdown-item d-flex align-items-center" href="/usersprofile.html">
-                  <i class="bi bi-gear"></i>
-                  <span>Account Settings</span>
-                </a>
-              </li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/usersprofile.html">
+                <i class="bi bi-gear"></i>
+                <span>Account Settings</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
 
-              <li>
-                <a class="dropdown-item d-flex align-items-center" href="/pages-faq.html">
-                  <i class="bi bi-question-circle"></i>
-                  <span>Need Help?</span>
-                </a>
-              </li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/pages-faq.html">
+                <i class="bi bi-question-circle"></i>
+                <span>Need Help?</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
 
-              <li>
-                {% if user.is_authenticated %}
-                <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}">
+            <li>
+              {% if user.is_authenticated %}
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Log Out</span>
+                {% else %}
+                <a class="dropdown-item d-flex align-items-center" href="{% url 'login' %}">
                   <i class="bi bi-box-arrow-right"></i>
                   <span>Log Out</span>
-                {% else %}
-                  <a class="dropdown-item d-flex align-items-center" href="{% url 'login' %}">
-                    <i class="bi bi-box-arrow-right"></i>
-                  <span>Log Out</span>
-                {% endif %}
-                
-                </a>
-              </li>
+                  {% endif %}
 
-            </ul><!-- End Profile Dropdown Items -->
+                </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
           {% else %}
-            <p>Welcome, guest</p>
+          <p>Welcome, guest</p>
           {% endif %}
         </li><!-- End Profile Nav -->
 
@@ -312,14 +316,15 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/dashboard">
-          <i class="bi bi-grid"></i>
-          <span>Dashboard2</span>
+        <a class="nav-link collapsed" href="/principal">
+          <span>Principal</span>
+
         </a>
       </li><!-- End Dashboard Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/principal">
-          <span>Panel</span>
+        <a class="nav-link collapsed" href="/dashboard">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard2</span>
         </a>
       </li>
 
@@ -332,74 +337,105 @@
         </a>
       </li>
       <!-- trae las carpetas del usuario -->
-      <div class="user-folders">      
+      <div class="user-folders">
         <a class="nav-link collapsed">
-            <li class="nav-item">
-              <!-- <a class="nav-link collapsed" href="#"> -->
-                <a class="nav-link collapsed" data-bs-target="#folders" data-bs-toggle="collapse" href="#">
-                  <i class="bi bi-folder"></i><span>Carpetas / Transcripciones</span><i class="bi bi-chevron-down ms-auto"></i>
+          <li class="nav-item">
+            <!-- <a class="nav-link collapsed" href="#"> -->
+            <a class="nav-link collapsed" data-bs-target="#folders" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-folder"></i><span>Carpetas / Transcripciones</span><i
+                class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <!-- <ul class="sidebar-nav"> -->
+            <ul id="folders" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+              {% for folder in top_level_folders %}
+              <li class="nav-item">
+                <a class="nav-link " href="{% url 'folder_detail' folder.id %}">
+                  <i class="bi bi-folder"></i>
+                  <span>{{ folder.name }}</span>
                 </a>
-              <!-- <ul class="sidebar-nav"> -->
-              <ul id="folders" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                  {% for folder in top_level_folders %}
-                      <li class="nav-item">
-                          <a class="nav-link " href="{% url 'folder_detail' folder.id %}">
-                              <i class="bi bi-folder"></i>
-                              <span>{{ folder.name }}</span>
-                          </a>
-                          {% with subfolders=folder.folder_set.all %}
-                              {% if subfolders %}
-                                  <ul>
-                                      {% for subfolder in subfolders %}
-                                          <li class="nav-item">
-                                              <a class="nav-link" href="{% url 'folder_detail' subfolder.id %}">
-                                                  <i class="bi bi-folder"></i>
-                                                  <span>{{ subfolder.name }}</span>
-                                              </a>
-                                          </li>
-                                      {% endfor %}
-                                  </ul>
-                              {% endif %}
-                          {% endwith %}
-                      </li>
+                {% with subfolders=folder.folder_set.all %}
+                {% if subfolders %}
+                <ul>
+                  {% for subfolder in subfolders %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'folder_detail' subfolder.id %}">
+                      <i class="bi bi-folder"></i>
+                      <span>{{ subfolder.name }}</span>
+                    </a>
+                  </li>
                   {% endfor %}
-                  <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#verticalycentered">
-                    <i class="bi bi-folder"></i>
-                    + Crear Carpeta
-                </button>
-              
-              </ul>
-            </li>  
+                </ul>
+                {% endif %}
+                {% endwith %}
+              </li>
+              {% endfor %}
+              <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                data-bs-target="#verticalycentered">
+                <i class="bi bi-folder"></i>
+                + Crear Carpeta
+              </button>
+
+            </ul>
+          </li>
         </a>
       </div>
       <!-- Fin de las carpetas del usuario -->
       <!-- Configuración del usuario -->
-      <div class="user-config">      
+      <div class="user-config">
+        <li class="nav-item">
+          <a class="nav-link collapsed" data-bs-target="#tablas-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-gear"></i><span>Tablas</span><i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul id="tablas-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="/type_identity">
+                <i class="bi bi-person"></i>
+                <span>Tipos de Identidad</span>
+              </a>
+            </li><!-- End Profile Page Nav -->
+
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="/pagesfaq">
+                <i class="bi bi-question-circle"></i>
+                <span>F.A.Q</span>
+              </a>
+            </li><!-- End F.A.Q Page Nav -->
+
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="/pagescontact">
+                <i class="bi bi-envelope"></i>
+                <span>Contact</span>
+              </a>
+            </li><!-- End Contact Page Nav -->
+          </ul>
+        </li><!-- Fin configuración del usuario -->
+      </div>
+      <div class="user-config">
         <li class="nav-item">
           <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-gear"></i><span>Configuración</span><i class="bi bi-chevron-down ms-auto"></i>
           </a>
           <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-              <li class="nav-item">
-                <a class="nav-link collapsed" href="/usersprofile">
-                  <i class="bi bi-person"></i>
-                  <span>Profile</span>
-                </a>
-              </li><!-- End Profile Page Nav -->
-              
-              <li class="nav-item">
-                <a class="nav-link collapsed" href="/pagesfaq">
-                  <i class="bi bi-question-circle"></i>
-                  <span>F.A.Q</span>
-                </a>
-              </li><!-- End F.A.Q Page Nav -->
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="/usersprofile">
+                <i class="bi bi-person"></i>
+                <span>Profile</span>
+              </a>
+            </li><!-- End Profile Page Nav -->
 
-              <li class="nav-item">
-                <a class="nav-link collapsed" href="/pagescontact">
-                  <i class="bi bi-envelope"></i>
-                  <span>Contact</span>
-                </a>
-              </li><!-- End Contact Page Nav -->
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="/pagesfaq">
+                <i class="bi bi-question-circle"></i>
+                <span>F.A.Q</span>
+              </a>
+            </li><!-- End F.A.Q Page Nav -->
+
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="/pagescontact">
+                <i class="bi bi-envelope"></i>
+                <span>Contact</span>
+              </a>
+            </li><!-- End Contact Page Nav -->
           </ul>
         </li><!-- Fin configuración del usuario -->
       </div>
@@ -409,7 +445,7 @@
   </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
-    
+
     {% block content %}
     <!-- Aquí va el contenido de la página -->
     {% endblock %}
@@ -429,7 +465,8 @@
     </div>
   </footer><!-- End Footer -->
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
   <script src="/static/css2/assets/vendor/apexcharts/apexcharts.min.js"></script>
@@ -440,11 +477,12 @@
   <script src="/static/css2/assets/vendor/simple-datatables/simple-datatables.js"></script>
   <script src="/static/css2/assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="/static/css2/assets/vendor/php-email-form/validate.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <!-- Template Main JS File -->
   <script src="/static/css2/assets/js/main.js"></script>
 
-<!-- Template Wizard sin sesion -->
+  <!-- Template Wizard sin sesion -->
   <!-- <script src="/static/css2/assets/js/jquery-2.2.4.min.js"></script>
   <script src="/static/css2/assets/js/bootstrap.min.js"></script>
   <script src="/static/css2/assets/js/jquery.bootstrap.wizard.js"></script> -->
@@ -453,11 +491,11 @@
   <!--  More information about jquery.validate here: http://jqueryvalidation.org/	 -->
   <!-- <script src="/static/css2/assets/js/jquery.validate.min.js"></script> -->
 
-<!-- FIN WIZARD -->
+  <!-- FIN WIZARD -->
   <!-- <script src="/static/css2/assets/js/jquery-3.3.1.min.js"></script>
 	<script src="/static/css2/assets/js/jquery.steps.js"></script> -->
-	<script src="/static/css2/assets/js/jquery-ui.min.js"></script>
-	<script src="/static/css2/assets/js/main2.js"></script>
+  <script src="/static/css2/assets/js/jquery-ui.min.js"></script>
+  <script src="/static/css2/assets/js/main2.js"></script>
 
 </body>
 

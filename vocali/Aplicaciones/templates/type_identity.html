@@ -1,0 +1,230 @@
+{% extends 'index_master.html' %} {% block content %}
+
+<div class="pagetitle">
+  <h1>Proceso de Transcripción - Tipos de Identidad</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/principal/">Home</a></li>
+      <li class="breadcrumb-item">Forms</li>
+      <li class="breadcrumb-item active">Type Identity</li>
+    </ol>
+  </nav>
+</div>
+<!-- End Page Title -->
+<section class="section">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Listado de Tipos de Identidad</h5>
+          <p>Lista de todos los tipos de identidad disponibles.</p>
+
+          <!-- Table with stripped rows -->
+          <table class="table datatable">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Descripción Completa</th>
+                <th scope="col">Nombre Corto</th>
+                <th scope="col">Última Actualización</th>
+                <!-- Aquí puedes agregar más columnas dependiendo de las propiedades del modelo tType_identity -->
+                <th scope="col">Acciones</th>
+                <!-- Columna para opciones CRUD -->
+              </tr>
+            </thead>
+            <tbody>
+              {% for type_identity in type_identities %}
+              <!-- Asumiendo que "type_identities" es el contexto que pasa el view -->
+              <tr>
+                <th scope="row">{{ type_identity.id_type_identity }}</th>
+                <td>{{ type_identity.name_type_identity }}</td>
+                <td>{{ type_identity.short_name_type_identity }}</td>
+                <td>{{ type_identity.date_updated }}</td>
+
+                <!-- Aquí puedes agregar más celdas si tu modelo tType_identity tiene más campos -->
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-warning btn-edit"
+                    data-id="{{ type_identity.id_type_identity }}"
+                    data-toggle="modal"
+                    data-target="#editModal{{ type_identity.id_type_identity }}"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger btn-delete"
+                    data-id="{{ type_identity.id_type_identity }}"
+                    data-toggle="modal"
+                    data-target="#deleteModal{{ type_identity.id_type_identity }}"
+                  >
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+
+              <!-- Modal Editar -->
+              <div
+                class="modal fade"
+                id="editModal{{ type_identity.id_type_identity }}"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="editModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="editModalLabel">
+                        Editar Tipo de Identidad
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <!-- Input para cambiar el nombre del tipo de identidad -->
+                      <input
+                        type="text"
+                        id="editName{{ type_identity.id_type_identity }}"
+                        value="{{ type_identity.name_type_identity }}"
+                      />
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Cerrar
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        onclick="editTypeIdentity({{ type_identity.id_type_identity }});"
+                        data-dismiss="modal"
+                      >
+                        Guardar cambios
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End Modal Editar -->
+              <!-- Modal Eliminar -->
+              <div
+                class="modal fade"
+                id="deleteModal{{ type_identity.id_type_identity }}"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="deleteModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="deleteModalLabel">
+                        Eliminar Tipo de Identidad
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      ¿Estás seguro que deseas eliminar este tipo de identidad?
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Cancelar
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-danger"
+                        onclick="deleteTypeIdentity({{type_identity.id_type_identity}});"
+                        data-dismiss="modal"
+                      >
+                        Confirmar eliminación
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {% endfor %}
+            </tbody>
+          </table>
+          <!-- End Table with stripped rows -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  // Editar
+  function editTypeIdentity(id) {
+    let newName = $("#editName" + id).val();
+
+    $.ajax({
+      type: "PUT",
+      url: "/api/type_identity/" + id + "/",
+      contentType: "application/json",
+      data: JSON.stringify({
+        id_type_identity: id,
+        name_type_identity: newName,
+      }),
+      success: function (response) {
+        alert("Tipo de Identidad actualizado con éxito!");
+        location.reload();
+      },
+      error: function (response) {
+        alert("Ocurrió un error al actualizar el Tipo de Identidad.");
+      },
+    });
+  }
+
+  // Eliminar
+  function deleteTypeIdentity(id) {
+    $.ajax({
+      type: "DELETE",
+      url: "/api/type_identity/" + id + "/",
+      success: function (response) {
+        alert("Tipo de Identidad eliminado con éxito!");
+        location.reload();
+      },
+      error: function (response) {
+        alert("Ocurrió un error al eliminar el Tipo de Identidad.");
+      },
+    });
+  }
+
+  $(document).ready(function () {
+    // Cuando se haga click en el botón de confirmación del modal de edición
+    $(".btn-confirm-edit").click(function () {
+      var id = $(this).data("id");
+      editTypeIdentity(id);
+    });
+
+    // Cuando se haga click en el botón de confirmación del modal de eliminación
+    $(".btn-confirm-delete").click(function () {
+      var id = $(this).data("id");
+      deleteTypeIdentity(id);
+    });
+  });
+</script>
+
+{% endblock %}
