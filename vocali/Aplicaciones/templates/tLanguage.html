@@ -1,0 +1,204 @@
+{% extends 'index_master.html' %} {% block content %}
+
+<div class="pagetitle">
+    <h1>Proceso de Transcripción - Idiomas</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/principal/">Home</a></li>
+            <li class="breadcrumb-item">Forms</li>
+            <li class="breadcrumb-item active">Idiomas</li>
+        </ol>
+    </nav>
+</div>
+<!-- End Page Title -->
+<section class="section">
+    <button type="button" class="btn btn-primary btn-edit" data-bs-toggle="modal" data-bs-target="#verticalycentered">
+        <i class="bi bi-folder"></i>
+        + Nuevo Registro
+    </button>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Listado de Idiomas</h5>
+                    <p>Lista de todos los Idiomas disponibles.</p>
+
+                    <!-- Table with stripped rows -->
+                    <table class="table datatable">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Idioma</th>
+                                <th scope="col">Nombre Corto</th>
+                                <th scope="col">Activo</th>
+                                <th scope="col">Última Actualización</th>
+                                <!-- Aquí puedes agregar más columnas dependiendo de las propiedades del modelo language -->
+                                <th scope="col">Acciones</th>
+                                <!-- Columna para opciones CRUD -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tLanguage in languages %}
+                            <!-- Asumiendo que "languages" es el contexto que pasa el view -->
+                            <tr>
+                                <th scope="row">{{ tLanguage.Id_language }}</th>
+                                <td>{{ tLanguage.description_language }}</td>
+                                <td>{{ tLanguage.short_description_language }}</td>
+                                <td>{{ tLanguage.enable }}</td>
+                                <td>{{ tLanguage.date_update }}</td>
+                                <td>
+                                    <!-- Aquí puedes agregar más celdas si tu modelo tType_identity tiene más campos -->
+                                    <button type="button" class="btn btn-warning btn-edit"
+                                        data-id="{{ tLanguage.Id_language  }}" data-bs-toggle="modal"
+                                        data-bs-target="#editModal">
+                                        Editar
+                                    </button>
+                                    <button 
+                                        type="button" class="btn btn-danger btn-delete"
+                                        data-id="{{ tLanguage.Id_language }}"
+                                        data-bs-target="#tlanguage{{tLanguage.Id_language }}"
+                                        data-bs-toggle="modal"><i >Eliminar</i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!--    MODAL DE EDICIÓN --> 
+                            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="editModalLabel">Editar Tipo de Idioma {{type_identity.id_type_identity}}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                         <form method="post" >
+                                            <div class="mb-3">
+                                                <label for="edit_name_type_identity" class="form-label">Tipo de
+                                                    Identidad:</label>
+                                                <input type="text" class="form-control"
+                                                    id=" {{language.description_language}}"
+                                                    name="name_type_identity">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="edit_short_name_type_identity" class="form-label">Nombre
+                                                    Corto:</label>
+                                                <input type="text" class="form-control"
+                                                    id="{{ language.short_description_language }}" name="short_name_type_identity">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="edit_enable" class="form-label">Activo:</label>
+                                                <input class="form-check-input" type="checkbox" id="{{ language.enable }}"
+                                                    name="enable">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Cancelar</button>
+                                        </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--    MODAL DE ELIMINAR -->
+                            <div class="modal fade" id="tlanguage{{tLanguage.Id_language }}" tabindex="-1"
+                                aria-labelledby="tlanguage{{tLanguage.Id_language }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteModalLabel">Eliminar Idiomas
+                                                {{tLanguage.description_language}}</h5>
+                                            <ul class="list-inline text-end">
+                                                <li class="list-inline-item">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                </li>
+                                                <li class="list-inline-item">
+                                                    <a href="{%url 'deleteLanguage' tLanguage.Id_language %}"
+                                                        class="btn btn-danger">Delete</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <!--    MODAL DE CREACIÓN -->
+                    <div class="modal fade" id="verticalycentered" tabindex="-1"
+                        aria-labelledby="verticalycenteredLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="verticalycenteredLabel">Crear Idiomas</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post" action="{% url 'createLanguage' %}">
+                                        {% csrf_token %}
+                                        <div class="mb-3">
+                                            <label for="tLanguagecription_language" class="form-label">Idiomas:</label>
+                                            <input type="text" class="form-control" id="description_language"
+                                                name="description_language" required>
+                                        </div>
+                                        <div class="mb-1">
+                                            <label for="short_description_language" class="form-label">Nombre Corto:</label>
+                                            <input type="text" maxlength="2" class="form-control" id="short_description_language" name="short_description_language" required>
+                                            <span id="charLimitMsg" style="color: red; display: none;">Máximo 2 caracteres.</span>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="tLanguageenable" class="form-label">Activo:</label>
+                                            <input class="form-check-input" type="checkbox" id="enable" name="enable"
+                                                checked>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Crear Lenguajes</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+
+    function closeModalAndShowMessage(modalID, message) {
+        // Cerrar modal
+        let modal = new bootstrap.Modal(document.getElementById(modalID));
+        modal.hide();
+
+        // Mostrar mensaje (puedes usar Toasts de Bootstrap o tu propia solución)
+        // Aquí un ejemplo usando Toasts de Bootstrap:
+        let toastEl = document.createElement('div');
+        toastEl.classList.add('toast');
+        toastEl.setAttribute('role', 'alert');
+        toastEl.setAttribute('aria-live', 'assertive');
+        toastEl.setAttribute('aria-atomic', 'true');
+        toastEl.innerHTML = `
+        <div class="toast-header">
+            <strong class="me-auto">Mensaje</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            ${message}
+        </div>
+    `;
+        document.body.appendChild(toastEl);
+
+        let toast = new bootstrap.Toast(toastEl, { autohide: true });
+        toast.show();
+    }
+</script>
+
+
+{% endblock %}

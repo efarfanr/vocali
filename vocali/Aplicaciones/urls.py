@@ -1,21 +1,35 @@
+from django.urls import include, path
 from django.contrib import admin
-# from django.contrib.auth.views import login, logout_the_login #29/05/2023
-from django.urls import include
+from rest_framework import routers
+
+
+#DefaultRouter
+
 from django.conf import settings
 from django.conf.urls.static import static
-from rest_framework.routers import DefaultRouter
+
 from django import views
 from . import views, api_views 
-from django.urls import path
 
-router = DefaultRouter()
-
+router = routers.DefaultRouter()
+router.register(r'company', api_views.CompanyViewSet)
+router.register(r'usr_company', api_views.Usr_companyViewSet)
+router.register(r'folder', api_views.FolderViewSet)
+router.register(r'tType_identity', api_views.tType_identityViewSet)
+router.register(r'tLanguage', api_views.tLanguageViewSet)
+router.register(r'tRoles_trans', api_views.tRoles_transViewSet)
+router.register(r'tEtapas_trans', api_views.tEtapas_transViewSet)
+router.register(r'tJson_trans', api_views.tJson_transViewSet)
+router.register(r'tTranscript', api_views.tTranscriptViewSet)
+router.register(r'tPerson', api_views.tPersonViewSet)
+router.register(r'uploaded_file', api_views.UploadedFileViewSet)
+router.register(r'tSpeakes_trans', api_views.tSpeaker_transViewSet)
 
 urlpatterns = [
     path('', views.index, name='index'),
     path('api/', include(router.urls)),
+
     path('contact/', views.contact_view, name='contact'),
-    # ... rutas de seguridad
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/profile/', views.profile_view, name='profile'),
     path('login/', views.login_view, name='login'),
@@ -23,55 +37,51 @@ urlpatterns = [
     path('pagesfaq/', views.pagesfaq, name='pagesfaq'),
     path('pagescontact/', views.pagescontact, name='pagescontact'),
     path('principal/', views.principal, name='principal'),
-    path('type_identity/', views.tType_identity_view, name='type_identity'),
-    
-    path('folder/<int:folder_id>/', views.folder_detail, name='folder_detail'),
-    # path('create_folder/', views.create_folder, name='create_folder'),
     path('dashboard/', views.dashboard, name='dashboard'),
     
 
-    path('upload/', views.upload_file, name='upload_file'),
-
-
-    path('api/company/', views.CompanyListCreateView.as_view(), name='company-list-create'),
-    path('api/company/<int:pk>/', views.CompanyRetrieveUpdateDestroyView.as_view(), name='company-detail'),
-
-    path('api/usr_company/', views.Usr_companyListCreateView.as_view(), name='usr_company-list-create'),
-    path('api/usr_company/<int:pk>/', views.Usr_companyRetrieveUpdateDestroyView.as_view(), name='usr_company-detail'),
 
     path('api/folder/', views.FolderListCreateView.as_view(), name='folder-list-create'),
     path('api/folder/<int:pk>/', views.FolderRetrieveUpdateDestroyView.as_view(), name='folder-detail'),
-    #path('api/folder/<int:folder_id>/files/', views.folder_files, name='folder_files'),
-    #path('api/folder/<int:folder_id>/files/<int:file_id>/', views.folder_file_detail, name='folder_file_detail'),
-    #path('api/folder/<int:folder_id>/files/<int:file_id>/transcripts/', views.folder_file_transcripts, name='folder_file_transcripts'),
+# Tipos de identidad
+    path('type_identity/', views.type_identity_view, name='type_identity'),
+    path('createType_identity', views.tType_identityCreateView.as_view(),name='createType_identity'),
+    path('updateType_identity/<int:pk>/', views.tType_identityUpdateView.as_view(),name='updateType_identity'),
+    path('deleteType_identity/<int:pk>/', views.tType_identityDeleteView.as_view(),name='deleteType_identity'),
+# Lenguajes
+    path('tLanguage/', views.tLanguage_view, name='tLanguage'),
+    path('createLanguage', views.tLanguageCreateView.as_view(),name='createLanguage'),
+    path('updateLanguage/<int:pk>/', views.tLanguageUpdateView.as_view(),name='updateLanguage'),
+    path('deleteLanguage/<int:pk>/', views.tLanguageDeleteView.as_view(),name='deleteLanguage'),
+# Roles de transcripción
+    path('tRoles_trans/', views.tRoles_trans_view, name='tRoles_trans'),
+    path('createtRoles_trans', views.tRoles_transCreateView.as_view(),name='createtRoles_trans'),
+    path('updatetRoles_trans/<int:pk>/', views.tRoles_transUpdateView.as_view(),name='updatetRoles_trans'),
+    path('deletetRoles_trans/<int:pk>/', views.tRoles_transDeleteView.as_view(),name='deletetRoles_trans'),
 
-    path('api/tType_identity/', views.tType_identityListCreateView.as_view(), name='tType_identity-list-create'),
-    path('api/tType_identity/<int:pk>/', views.tType_identityRetrieveUpdateDestroyView.as_view(), name='tType_identity-detail'),
+# Etapas de transcripción
+    path('tEtapas_trans/', views.tEtapas_trans_view, name='tEtapas_trans'),
+    path('createtEtapas_trans', views.tEtapas_transCreateView.as_view(),name='createtEtapas_trans'),
+    path('updatetEtapas_trans/<int:pk>/', views.tEtapas_transUpdateView.as_view(),name='updatetEtapas_trans'),
+    path('deletetEtapas_trans/<int:pk>/', views.tEtapas_transDeleteView.as_view(),name='deletetEtapas_trans'),
 
-    path('api/tLanguage/', views.tLanguageListCreateView.as_view(), name='tLanguage-list-create'),
-    path('api/tLanguage/<int:pk>/', views.tLanguageRetrieveUpdateDestroyView.as_view(), name='tLanguage-detail'),
+# Transcripciones
+    path('folder/<int:folder_id>/', views.folder_detail, name='folder_detail'),
+    path('upload/', views.upload_file, name='upload_file'),
 
-    path('api/tRoles_trans/', views.tRoles_transListCreateView.as_view(), name='tRoles_trans-list-create'),
-    path('api/tRoles_trans/<int:pk>/', views.tRoles_transRetrieveUpdateDestroyView.as_view(), name='tRoles_trans-detail'),
+    path('tTranscript/', views.tTranscript_view, name='tTranscript'),
+    path('createtTranscript', views.tTranscriptCreateView.as_view(),name='createtTranscript'),
+    path('updatetTranscript/<int:pk>/', views.tTranscriptUpdateView.as_view(),name='updatetTranscript'),
+    path('deletetTranscript/<int:pk>/', views.tTranscriptDeleteView.as_view(),name='deletetTranscript'),
+    
+# Personas
 
-    path('api/tEtapas_trans/', views.tEtapas_transListCreateView.as_view(), name='tEtapas_trans-list-create'),
-    path('api/tEtapas_trans/<int:pk>/', views.tEtapas_transRetrieveUpdateDestroyView.as_view(), name='tEtapas_trans-detail'),
-        
-    path('api/tJson_trans/', views.tJson_transListCreateView.as_view(), name='tJson_trans-list-create'), 
-    path('api/tJson_trans/<int:pk>/', views.tjSon_transRetrieveUpdateDestroyView.as_view(), name='tJson_trans-detail'),
+    path('tPerson/', views.tPerson_view, name='tPerson'),
+    path('createtPerson', views.tPersonCreateView.as_view(),name='createtPerson'),
+    path('updatetPerson/<int:pk>/', views.tPersonUpdateView.as_view(),name='updatetPerson'),
+    path('deletetPerson/<int:pk>/', views.tPersonDeleteView.as_view(),name='deletetPerson'),
 
-    path('api/tTranscript/', views.tTranscriptListCreateView.as_view(), name='tTranscript-list-create'),
-    path('api/tTranscript/<int:pk>/', views.tTranscriptRetrieveUpdateDestroyView.as_view(), name='tTranscript-detail'),
-  
-    path('api/tPerson/', views.tPersonListCreateView.as_view(), name='tPerson-list-create'),
-    path('api/tPerson/<int:pk>/', views.tPersonRetrieveUpdateDestroyView.as_view(), name='tPerson-detail'),
+# Speakers
 
-    path('api/uploaded_file/', views.UploadedFileListCreateView.as_view(), name='uploaded_file-list-create'),
-    path('api/uploaded_file/<int:pk>/', views.UploadedFileRetrieveUpdateDestroyView.as_view(), name='uploaded_file-detail'),
-
-    path('api/tSpeaker_trans/', views.tSpeaker_transListCreateView.as_view(), name='tSpeaker_trans-list-create'),
-    path('api/tSpeaker_trans/<int:pk>/', views.tSpeaker_transRetrieveUpdateDestroyView.as_view(), name='tSpeaker_trans-detail'),
-  
-    # ... Rutas de las paginas del aplicativo
-    ]
+]
 

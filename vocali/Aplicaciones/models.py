@@ -45,19 +45,7 @@ class Usr_company(models.Model):
     # def __str__(self):
     #     return str(self.company_nom) 
 
-class Folder(models.Model):
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    parent_folder = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
-    class Meta:
-        verbose_name = "Carpeta"
-        verbose_name_plural = "Carpetas"
-        
-    def __str__(self):
-        return self.name
+
 
     
 class tType_identity(models.Model):
@@ -77,7 +65,7 @@ class tType_identity(models.Model):
 class tLanguage(models.Model):
     Id_language = models.AutoField(primary_key=True)
     description_language = models.CharField(max_length=30,blank=True, null=True)
-    short_description_language = models.CharField(max_length=2,blank=True, null=True)
+    short_description_language = models.CharField(max_length=3,blank=True, null=True)
     enable = models.BooleanField(default=False)
     date_update = models.DateTimeField(auto_now=True)
 
@@ -100,19 +88,6 @@ class tRoles_trans(models.Model):
         
     def __str__(self):
         return self.rol_transcrip_name 
-
-class tEtapas_trans(models.Model):
-    id_etapa_trans = models.AutoField(primary_key=True)
-    etapa_name = models.CharField(max_length=50,blank=True, null=True)
-    enable = models.BooleanField(default=False)
-    date_update = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = "Etapa"
-        verbose_name_plural = "Etapas"
-        
-    def __str__(self):
-        return self.etapa_name 
 
 class tJson_trans(models.Model):
     idjson_trans = models.AutoField(primary_key=True)
@@ -138,8 +113,34 @@ class tJson_trans(models.Model):
                 response.raise_for_status()
         else:
             raise ValueError("No URL defined for this object")
+        
+class tEtapas_trans(models.Model):
+    id_etapa_trans = models.AutoField(primary_key=True)
+    etapa_name = models.CharField(max_length=50,blank=True, null=True)
+    enable = models.BooleanField(default=False)
+    date_update = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = "Etapa"
+        verbose_name_plural = "Etapas"
+        
+    def __str__(self):
+        return self.etapa_name 
 
+class Folder(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    parent_folder = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name = "Carpeta"
+        verbose_name_plural = "Carpetas"
+        
+    def __str__(self):
+        return self.name
+    
 class tTranscript(models.Model):
     id_transcript = models.AutoField(primary_key=True)
     number_proces_transcript = models.CharField(max_length=15,blank=True, null=True)
@@ -149,6 +150,7 @@ class tTranscript(models.Model):
     s3_video_url = models.CharField(max_length=100,blank=True, null=True) # url con procedimiento de disminución
     idjson_trans = models.ForeignKey(tJson_trans, on_delete=models.CASCADE, null=True) 
     id_etapa_trans = models.ForeignKey(tEtapas_trans, on_delete=models.CASCADE, null=True) 
+    id_folder = models.ForeignKey(Folder, on_delete=models.CASCADE, null=True)
     enable = models.BooleanField(default=False)
     date_update = models.DateTimeField(auto_now=True)
 
@@ -184,10 +186,10 @@ class UploadedFile(models.Model):
     file = models.FileField(upload_to='upload/')
 
 # Speaker esta tabla el objetivo de asociar una persona con una transcripción y aquí se le agrega cual es el rol dentro de la transcripción
-class tSpeaker_trans(models.Model): 
+class tSpeakers_trans(models.Model): 
     id_spk_trans = models.AutoField(primary_key=True)
     name_spk_trans = models.CharField(max_length=50,blank=True, null=True)
-    timestamp_spk_trans = models.DateTimeField(auto_now=True) # arreglo 
+    spks_timestamp_trans = ArrayField(models.DateTimeField(), null=True) #arreglo 
     id_transcript = models.OneToOneField(tTranscript, on_delete=models.CASCADE)
     id_person = models.OneToOneField(tPerson, on_delete=models.CASCADE)
     id_roles_trans = models.OneToOneField(tRoles_trans, on_delete=models.CASCADE)

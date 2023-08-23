@@ -1,0 +1,191 @@
+{% extends 'index_master.html' %} 
+{% block content %}
+
+<div class="pagetitle">
+    <h1>Proceso de Transcripción - Etapas en la Transcripción</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/principal/">Home</a></li>
+            <li class="breadcrumb-item">Forms</li>
+            <li class="breadcrumb-item active">Etapas</li>
+        </ol>
+    </nav>
+</div>
+<!-- End Page Title -->
+<section class="section">
+    <button type="button" class="btn btn-primary btn-edit" data-bs-toggle="modal" data-bs-target="#verticalycentered">
+        <i class="bi bi-folder"></i>
+        + Nuevo Registro
+    </button>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Listado de Etapas</h5>
+                    <p>Lista de todos las Etapas disponibles.</p>
+
+                    <!-- Table with stripped rows -->
+                    <table class="table datatable">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Descripción</th>
+                                <th scope="col">Activo</th>
+                                <th scope="col">Última Actualización</th>
+                                <!-- Aquí puedes agregar más columnas dependiendo de las propiedades del modelo language -->
+                                <th scope="col">Acciones</th>
+                                <!-- Columna para opciones CRUD -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tEtapas_trans in etapas_trans %}
+                            <!-- Asumiendo que "languages" es el contexto que pasa el view -->
+                            <tr>
+                                <th scope="row">{{ tEtapas_trans.id_etapa_trans }}</th>
+                                <td>{{ tEtapas_trans.etapa_name }}</td>
+                                <td>{{ tEtapas_trans.enable }}</td>
+                                <td>{{ tEtapas_trans.date_update }}</td>
+                                <td>
+                                    <!-- Aquí puedes agregar más celdas si tu modelo tType_identity tiene más campos -->
+                                    <button type="button" class="btn btn-warning btn-edit"
+                                        data-id="{{ roles_trans.id_etapa_trans  }}" data-bs-toggle="modal"
+                                        data-bs-target="#editModal">
+                                        Editar
+                                    </button>
+                                    <button 
+                                        type="button" class="btn btn-danger btn-delete"
+                                        data-id="{{ tEtapas_trans.id_etapa_trans }}"
+                                        data-bs-target="#tEtapas_trans{{tEtapas_trans.id_etapa_trans }}"
+                                        data-bs-toggle="modal"><i >Eliminar</i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!--    MODAL DE EDICIÓN --> 
+                            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="editModalLabel">Editar Tipo de Rol  = {{tEtapas_trans.etapa_name}}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                         <form method="post" >
+                                            <div class="mb-3">
+                                                <label for="edit_etapa_name" class="form-label">Tipo de
+                                                    Rol:</label>
+                                                <input type="text" class="form-control"
+                                                    id=" {{tEtapas_trans.etapa_name}}"
+                                                    name="etapa_name">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="edit_enable" class="form-label">Activo:</label>
+                                                <input class="form-check-input" type="checkbox" id="{{ tEtapas_trans.enable }}"
+                                                    name="{{ tEtapas_trans.enable }}">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Cancelar</button>
+                                        </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--    MODAL DE ELIMINAR -->
+                            <div class="modal fade" id="tEtapas_trans{{tEtapas_trans.id_etapa_trans }}" tabindex="-1"
+                                aria-labelledby="tEtapas_trans{{tEtapas_trans.id_etapa_trans }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteModalLabel">Eliminar la Etapa Nro. {{tEtapas_trans.id_etapa_trans}} Descripción =
+                                                {{tEtapas_trans.etapa_name}}</h5>
+                                            <ul class="list-inline text-end">
+                                                <li class="list-inline-item">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                </li>
+                                                <li class="list-inline-item">
+                                                    <a href="{%url 'deletetEtapas_trans' tEtapas_trans.id_etapa_trans %}"
+                                                        class="btn btn-danger">Delete</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <!--    MODAL DE CREACIÓN -->
+                    <div class="modal fade" id="verticalycentered" tabindex="-1"
+                        aria-labelledby="verticalycenteredLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="verticalycenteredLabel">Crear Roles</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post" action="{% url 'createtEtapas_trans' %}">
+                                        {% csrf_token %}
+                                        <div class="mb-3">
+                                            <label for="roles_transetapa_name" class="form-label">Descripción:</label>
+                                            <input type="text" class="form-control" id="etapa_name"
+                                                name="etapa_name" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="roles_transenable" class="form-label">Activo:</label>
+                                            <input class="form-check-input" type="checkbox" id="enable" name="enable"
+                                                checked>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Crear Rol</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+
+    function closeModalAndShowMessage(modalID, message) {
+        // Cerrar modal
+        let modal = new bootstrap.Modal(document.getElementById(modalID));
+        modal.hide();
+
+        // Mostrar mensaje (puedes usar Toasts de Bootstrap o tu propia solución)
+        // Aquí un ejemplo usando Toasts de Bootstrap:
+        let toastEl = document.createElement('div');
+        toastEl.classList.add('toast');
+        toastEl.setAttribute('role', 'alert');
+        toastEl.setAttribute('aria-live', 'assertive');
+        toastEl.setAttribute('aria-atomic', 'true');
+        toastEl.innerHTML = `
+        <div class="toast-header">
+            <strong class="me-auto">Mensaje</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            ${message}
+        </div>
+    `;
+        document.body.appendChild(toastEl);
+
+        let toast = new bootstrap.Toast(toastEl, { autohide: true });
+        toast.show();
+    }
+</script>
+
+
+{% endblock %}

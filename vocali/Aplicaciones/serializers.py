@@ -11,10 +11,6 @@ class Usr_companySerializer(serializers.ModelSerializer):
         model = Usr_company
         fields = '__all__'
 
-class FolderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Folder
-        fields = '__all__'
 
 class tType_identitySerializer(serializers.ModelSerializer):
     class Meta:
@@ -31,15 +27,21 @@ class tRoles_transSerializer(serializers.ModelSerializer):
         model = tRoles_trans
         fields = '__all__'
  
+class tJson_transSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = tJson_trans
+        fields = '__all__'
+
 
 class tEtapas_transSerializer(serializers.ModelSerializer):
     class Meta:
         model = tEtapas_trans
         fields = '__all__'
 
-class tJson_transSerializer(serializers.ModelSerializer):
+
+class FolderSerializer(serializers.ModelSerializer):
     class Meta:
-        model = tJson_trans
+        model = Folder
         fields = '__all__'
 
 class tTranscriptSerializer(serializers.ModelSerializer):
@@ -60,7 +62,7 @@ class UploadedFileSerializer(serializers.ModelSerializer):
 
 class tSpeaker_transSerializer(serializers.ModelSerializer):
     class Meta:
-        model = tSpeaker_trans
+        model = tSpeakers_trans
         fields = '__all__'
 
 

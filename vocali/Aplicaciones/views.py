@@ -9,17 +9,21 @@ from django.db import connection
 from django.http import JsonResponse, QueryDict
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.admin.views.decorators import staff_member_required
-from .forms import UploadFileForm, FolderForm
-from .models import UploadedFile
+from Aplicaciones.models import *
+from Aplicaciones.forms import UploadFileForm, FolderForm, tType_identityForm, tLanguageForm, tRoles_transForm, tEtapas_transForm,tTranscriptForm, tPersonForm
+
+
+from django.views import View
 from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
 
-from django.views.generic import ListView, CreateView
+
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
@@ -27,6 +31,10 @@ from rest_framework.permissions import IsAuthenticated
 from .models import *
 # Import all serializers.
 from .serializers import *
+# Import all API
+from .api_views import *
+# Import all forms.
+#from .forms import *
 # Importa locale y establece la configuración regional
 import locale
 import json
@@ -49,11 +57,13 @@ def login_view(request):
 # TEMPLATE_DIRS = (
 #     'os.path.joins(BASE_DIR, "templates")'
 #     )
-
-
-
 def index(request):
     return render(request, "index.html")
+
+
+@login_required
+def dashboard(request):
+    return render(request, "dashboard.html")
 
 @login_required
 def usersprofile(request):
@@ -67,20 +77,9 @@ def pagesfaq(request):
 def pagescontact(request):
     return render(request, "pagescontact.html")
 
-
 @login_required
-def dashboard(request):
-    return render(request, "dashboard.html")
-
-@login_required
-def wizard(request):
-    return render(request, "wizard.html")
-
-# @login_required
-# def principal(request):
-#     user = request.user
-#     top_level_folders = Folder.objects.filter(user=user, parent_folder=None)
-#     return render(request, 'principal.html', {'top_level_folders': top_level_folders})
+def contact_view(request):    
+    return render(request, 'contact.html')
 
 @login_required
 def principal(request):
@@ -99,28 +98,15 @@ def principal(request):
         form = FolderForm()
     return render(request, 'principal.html', {'form': form, 'top_level_folders': top_level_folders})
 
+@login_required
+def wizard(request):
+    return render(request, "wizard.html")
 
-def create_folder(request):
-    if request.method == 'POST':
-        form = FolderForm(request.POST)
-        if form.is_valid():
-            folder = form.save(commit=False)
-            folder.user = request.user
-            folder.save()
-            return redirect('principal')
-    else:
-        form = FolderForm()
-    return render(request, 'principal.html', {'form': form})
 
 @login_required
 def folder_detail(request, folder_id):
     folder = get_object_or_404(Folder, id=folder_id)
     return render(request, 'folder_detail.html', {'folder': folder})
-
-@login_required
-def contact_view(request):
-    
-    return render(request, 'contact.html')
 
 
 def profile_view(request):
@@ -138,6 +124,149 @@ def profile_view(request):
     return render(request, 'usersprofile.html', context)
 
 
+
+# CREATE FOLDERS AND SUBFOLDERS THE USER
+def create_folder(request):
+    if request.method == 'POST':
+        form = FolderForm(request.POST)
+        if form.is_valid():
+            folder = form.save(commit=False)
+            folder.user = request.user
+            folder.save()
+            return redirect('principal')
+    else:
+        form = FolderForm()
+    return render(request, 'principal.html', {'form': form})
+
+
+#tipos de tIdentificación
+def type_identity_view(request):
+      type_identities = tType_identity.objects.all()
+      return render(request, 'type_identity.html', {'type_identities': type_identities})
+
+class tType_identityListView(ListView):
+    models = tType_identity
+    serializer_class = tType_identitySerializer
+    template_name = 'type_identity.html'
+    content_object_name = 'type_identities'
+    success_url = '/type_identity/'
+
+class tType_identityCreateView(CreateView):
+    model = tType_identity
+    form_class = tType_identityForm
+    template_name = 'type_identity.html'
+    success_url = '/type_identity/'
+
+class tType_identityUpdateView(UpdateView):
+    model=tType_identity
+    form_class = tType_identityForm
+    template_name = 'type_identity.html'
+    success_url = '/type_identity/'
+
+class tType_identityDeleteView(DeleteView):
+    model = tType_identity
+    success_url = '/type_identity/'
+
+    def get(self,request, *args, **kwargs):
+        return self.delete(request,*args, **kwargs)
+
+#tipos de tLanguage
+
+def tLanguage_view(request):
+      tLanguages = tLanguage.objects.all()
+      return render(request, 'tLanguage.html', {'languages': tLanguages})
+
+
+class tLanguageListView(ListView):
+    models = tLanguage
+    serializer_class = tLanguageSerializer
+    template_name = 'tLanguage.html'
+    content_object_name = 'tLanguage'
+    success_url = '/tLanguage/'
+
+class tLanguageCreateView(CreateView):
+    model = tLanguage
+    form_class = tLanguageForm
+    template_name = 'tLanguage.html'
+    success_url = '/tLanguage/'
+
+class tLanguageUpdateView(UpdateView):
+    model=tLanguage
+    form_class = tLanguageForm
+    template_name = 'tLanguage.html'
+    success_url = '/tLanguage/'
+
+class tLanguageDeleteView(DeleteView):
+    model = tLanguage
+    success_url = '/tLanguage/'
+    
+    def get(self,request, *args, **kwargs):
+        return self.delete(request,*args, **kwargs)
+
+#Roles de transcripcion
+
+def tRoles_trans_view(request):
+    tRoles_transs = tRoles_trans.objects.all()
+    return render(request, 'tRoles_trans.html',{'roles_trans': tRoles_transs})
+
+class tRoles_transListView(ListView):
+    models = tRoles_trans
+    serializer_class = tRoles_transSerializer
+    template_name = 'tRoles_trans.html'
+    content_object_name = 'tRoles_trans'
+    success_url = '/tRoles_trans/'
+
+class tRoles_transCreateView(CreateView):
+    models = tRoles_trans
+    form_class = tRoles_transForm
+    template_name = 'tRoles_trans.html'
+    success_url = '/tRoles_trans/'
+
+class tRoles_transUpdateView(UpdateView):
+    model=tRoles_trans
+    form_class = tRoles_transForm
+    template_name = 'tRoles_trans.html'
+    success_url = '/tRoles_trans/'
+
+class tRoles_transDeleteView(DeleteView):
+    model=tRoles_trans
+    success_url = '/tRoles_trans/'
+    def get(self,request, *args, **kwargs):
+        return self.delete(request,*args, **kwargs)
+
+#Etapas de transcripcion
+
+def tEtapas_trans_view(request):
+    tEtapas_transs = tEtapas_trans.objects.all()
+    return render(request,'tEtapas_trans.html',{'etapas_trans': tEtapas_transs})
+
+class tEtapas_transListView(ListView):
+    model = tEtapas_trans
+    template_name = 'tEtapas_trans.html'
+    context_object_name = 'tEtapas_trans'
+    success_url = '/tEtapas_trans/'
+
+class tEtapas_transCreateView(CreateView):
+    model = tEtapas_trans
+    form_class = tEtapas_transForm
+    template_name = 'tEtapas_trans.html'
+    success_url = '/tEtapas_trans/'
+
+class tEtapas_transUpdateView(UpdateView):
+    model = tEtapas_trans
+    form_class = tEtapas_transForm
+    template_name = 'tEtapas_trans.html'
+    success_url = '/tEtapas_trans/'
+
+class tEtapas_transDeleteView(DeleteView):
+    model = tEtapas_trans
+    success_url = '/tEtapas_trans/'
+    def get(self, request, *args, **kwargs):
+        return self.delete(request, *args, **kwargs)
+
+#Transcripciones
+
+#UPLOAD FILES MEDIA /MEDIA/UPLOAD/
 @login_required
 def upload_file(request):
     if request.method == 'POST' and request.FILES['audio_video_file']:
@@ -150,125 +279,61 @@ def upload_file(request):
         return render(request, 'upload.html', {'uploaded_file_url': uploaded_file_url})
     return render(request, 'upload.html')
 
-@login_required
-def tType_identity_view(request):
-    type_identities = tType_identity.objects.all()
-    return render(request, 'type_identity.html', {'type_identities': type_identities})
+def tTranscript_view(request):
+    tTranscripts = tTranscript.objects.all()
+    return render(request, 'tTranscript.html',{'transcripts': tTranscripts})
 
-@login_required
-def tLanguage_view(request):
-    languages = tLanguage.objects.all()
-    return render(request, 'language.html', {'languages': languages})
+class tTranscriptListView(ListView):
+    model = tTranscript
+    template_name = 'tTranscript.html'
+    context_object_name = 'tTranscript'
+    success_url = '/tTranscript/'
 
-@login_required
-def company_view(request):
-    companies = Company.objects.all()
-    return render(request, 'company.html', {'companies': companies})
+class tTranscriptCreateView(CreateView):
+    model = tTranscript
+    form_class = tTranscriptForm
+    template_name = 'tTranscript.html'
+    success_url = '/tTranscript/'
 
-@login_required
-def usr_company_view(request):
-    usr_companies = Usr_company.objects.all()
-    return render(request, 'usr_company.html', {'usr_companies': usr_companies})
+class tTranscriptUpdateView(UpdateView):
+    model = tTranscript
+    form_class = tTranscriptForm
+    template_name = 'tTranscript.html'
+    success_url = '/tTranscript/'
 
-@login_required
-def folder_view(request):
-    folders = Folder.objects.all()
-    return render(request, 'folder.html', {'folders': folders})
+class tTranscriptDeleteView(DeleteView):
+    model = tTranscript
+    success_url = '/tTranscript/'
+    def get(self, request, *args, **kwargs):
+        return self.delete(request, *args, **kwargs)
 
-class CompanyListCreateView(generics.ListCreateAPIView):
-    queryset = Company.objects.all()
-    serializer_class = CompanySerializer
+#Personas
 
-class CompanyRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Company.objects.all()
-    serializer_class = CompanySerializer
+def tPerson_view(request):
+    tPersons = tPerson.objects.all()
+    return render(request, 'tPerson.html',{'persons': tPersons})
 
-class Usr_companyListCreateView(generics.ListCreateAPIView):
-    queryset = Usr_company.objects.all()
-    serializer_class = Usr_companySerializer
+class tPersonListView(ListView):
+    model = tPerson
+    template_name = 'tPerson.html'
+    context_object_name = 'tPerson'
+    success_url = '/tPerson/'
 
-class Usr_companyRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Usr_company.objects.all()
-    serializer_class = Usr_companySerializer
+class tPersonCreateView(CreateView):
+    model = tPerson
+    form_class = tPersonForm
+    template_name = 'tPerson.html'
+    success_url = '/tPerson/'
 
-class FolderListCreateView(generics.ListCreateAPIView):
-    queryset = Folder.objects.all()
-    serializer_class = FolderSerializer
+class tPersonUpdateView(UpdateView):
+    model = tPerson
+    form_class = tPersonForm
+    template_name = 'tPerson.html'
+    success_url = '/tPerson/'
 
-class FolderRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Folder.objects.all()
-    serializer_class = FolderSerializer
-
-class tType_identityListCreateView(generics.ListCreateAPIView):
-    queryset = tType_identity.objects.all()
-    serializer_class = tType_identitySerializer
-
-class tType_identityRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = tType_identity.objects.all()
-    serializer_class = tType_identitySerializer
-
-class tLanguageListCreateView(generics.ListCreateAPIView):
-    queryset = tLanguage.objects.all()
-    serializer_class = tLanguageSerializer
-
-class tLanguageRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = tLanguage.objects.all()
-    serializer_class = tLanguageSerializer
-
-class tRoles_transListCreateView(generics.ListCreateAPIView):
-    queryset = tRoles_trans.objects.all()
-    serializer_class = tRoles_transSerializer
-
-class tRoles_transRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = tRoles_trans.objects.all()
-    serializer_class = tRoles_transSerializer
-
-class tEtapas_transListCreateView(generics.ListCreateAPIView):
-    queryset = tEtapas_trans.objects.all()
-    serializer_class = tEtapas_transSerializer    
-
-class tEtapas_transRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = tEtapas_trans.objects.all()
-    serializer_class = tEtapas_transSerializer    
-
-class tJson_transListCreateView(generics.ListCreateAPIView):
-    queryset = tJson_trans.objects.all()
-    serializer_class = tJson_transSerializer   
-
-class tjSon_transRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = tJson_trans.objects.all()
-    serializer_class = tJson_transSerializer
-
-class tTranscriptListCreateView(generics.ListCreateAPIView):
-    queryset = tTranscript.objects.all()
-    serializer_class = tTranscriptSerializer
-
-class tTranscriptRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = tTranscript.objects.all()
-    serializer_class = tTranscriptSerializer
-
-class tPersonListCreateView(generics.ListCreateAPIView):
-    queryset = tPerson.objects.all()
-    serializer_class = tPersonSerializer
-
-class tPersonRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = tPerson.objects.all()
-    serializer_class = tPersonSerializer
-
-class UploadedFileListCreateView(generics.ListCreateAPIView):
-    queryset = UploadedFile.objects.all()
-    serializer_class = UploadedFileSerializer
-
-class UploadedFileRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = UploadedFile.objects.all()
-    serializer_class = UploadedFileSerializer
-
-class tSpeaker_transListCreateView(generics.ListCreateAPIView):
-    queryset = tSpeaker_trans.objects.all()
-    serializer_class = tSpeaker_transSerializer
-
-class tSpeaker_transRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = tSpeaker_trans.objects.all()
-    serializer_class = tSpeaker_transSerializer
-
+class tPersonDeleteView(DeleteView):
+    model = tPerson
+    success_url = '/tPerson/'
+    def get(self, request, *args, **kwargs):
+        return self.delete(request, *args, **kwargs)
 

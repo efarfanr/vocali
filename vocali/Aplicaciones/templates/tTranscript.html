@@ -1,0 +1,192 @@
+{% extends 'index_master.html' %} {% block content %}
+
+<div class="pagetitle">
+    <h1>Form Elements</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/principal/">Home</a></li>
+            <li class="breadcrumb-item active">Transcripciones</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="card" style="background-color: #dedcdc;">
+            <h5 class="card-title">Transcripción</h5>
+            <form>
+                <div class="row mb-3">
+                    <div class="col-sm-50">
+                        <label for="inputEmail" class="col-sm-2 col-form-label">12/12/23</label> <label
+                            for="inputEmail" class="col-sm-2 col-form-label">Compensar - Rama Judicial</label>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="text" class="col-sm-2 col-form-label">ID</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" value="123 - 456 - 789" disabled>
+                    </div>
+                    <label for="text" class="col-sm-2 col-form-label">Etapa</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="col-sm-24 search-bar">
+                    <form class="search-form d-flex align-items-center" method="POST" action="/tTranscript/">
+                      <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+                      <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+                    </form>
+                    <div class="btn-group  text-align: left " role="group" aria-label="Opciones">
+                        <button type="button" class="btn btn-success"><i class="bi bi-check-circle"></i></button>
+                        <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
+                        <button type="button" class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
+                        <button type="button" class="btn btn-info"><i class="bi bi-info-circle"></i></button>
+                    </div>
+                    
+                </div><!-- End Search Bar -->
+                
+            </form>
+        </div> 
+    </div>
+</section>
+<section>
+    <div class="row">
+        <div class="row mb-3">
+            <audio class="w-100" id="plyr-audio-player" controls>
+                <source src="{{uploaded_file_url}}" type="audio/mp3" />
+            </audio>
+        </div>
+    </div>    
+</section>
+<section class="section">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card" style="background-color: #dedcdc;">
+                <div class="card-body">
+                    <form>
+                        <div class="row mb-3">
+                            <label for="inputDate" class="col-sm-15 col-form-label">Fecha de la Transcripción</label>
+                            <div class="col-sm-5">
+                                <input type="date" class="form-control">
+                            </div>
+                        </div>                   
+                        <div class="row mb-3">
+                            <label for="text" class="col-sm-15 col-form-label">Nombre de la Transcripción</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" value="Compensar - Rama Judicial" disabled>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-15 col-form-label">Etapa</label>
+                            <div class="col-sm-10">
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected>Prejudicial</option>
+                                    <option value="1">Actas</option>
+                                    <option value="2">Juridico</option>
+                                    <option value="3">Corporativo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <label class="col-sm-15 col-form-label">Carpeta donde esta guardada la Transcripción</label>
+                            <div class="col-sm-5">
+                                <button type="button" class="btn btn-outline-secondary">Crear Carpeta</button>
+                            </div>
+                            <div class="col-sm-5">
+                                
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected>Crear Carpeta</option>
+                                    <option value="1">Prejuridico</option>
+                                    <option value="2">Juridico</option>
+                                    <option value="3">Corporativo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="inputNumber" class="col-sm-15 col-form-label">Número ID</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" disabled>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="inputNumber" class="col-sm-15 col-form-label">File Upload</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="file" id="formFile">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label for="inputTime" class="col-sm-15 col-form-label">Duración Transcripción</label>
+                            <div class="col-sm-5">
+                                <input type="time" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="inputPassword" class="col-sm-15 col-form-label">Descripción</label>
+                            <div class="col-sm-15">
+                                <textarea class="form-control" style="height: 100px"></textarea>
+                            </div>
+                        </div>                       
+                    </form><!-- End General Form Elements -->
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-lg-8">
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Texto de la Transcripción</h5>
+
+                    <form id="myForm" style="max-height: 700px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;">
+                        <input type="file" id="jsonFileInput" accept=".json" onchange="displayJSON()">
+                        <div id="jsonOutput"></div>
+                    
+                        <script>
+                            function displayJSON() {
+                                const fileInput = document.getElementById('jsonFileInput');
+                                const file = fileInput.files[0];
+                                const outputDiv = document.getElementById('jsonOutput');
+                    
+                                if (file) {
+                                    const reader = new FileReader();
+                                    reader.onload = function(event) {
+                                        try {
+                                            const jsonObject = JSON.parse(event.target.result);
+                                            outputDiv.innerHTML = displayObject(jsonObject);
+                                        } catch (error) {
+                                            alert('Error parsing JSON: ' + error.message);
+                                        }
+                                    }
+                                    reader.readAsText(file);
+                                } else {
+                                    outputDiv.innerHTML = '';
+                                }
+                            }
+                    
+                            function displayObject(obj) {
+                                let outputHtml = '<ul>';
+                                for (const key in obj) {
+                                    if (typeof obj[key] === 'object') {
+                                        outputHtml += `<li><span class="json-key">${key}:</span> ${displayObject(obj[key])}</li>`;
+                                    } else {
+                                        outputHtml += `<li><span class="json-key">${key}:</span> ${obj[key]}</li>`;
+                                    }
+                                }
+                                outputHtml += '</ul>';
+                                return outputHtml;
+                            }
+                        </script>
+
+                    </form>
+                    
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

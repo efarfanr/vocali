@@ -1,4 +1,3 @@
-
 {% extends 'index_master.html' %}
 {% block content %}
 
@@ -19,88 +18,113 @@
             <!-- SUBIR ARCHIVO -->
             <form method="post" class="form-signin" enctype="multipart/form-data">
                 {% csrf_token %}
-                
+
                 <!-- <input type="file" name="audio_file" required> -->
-                <input type="file" name="audio_video_file" id="mediaInput" accept="audio/*,video/*" required onChange="previewMedia();">
+                <input type="file" name="audio_video_file" id="mediaInput" accept="audio/*,video/*" required
+                    onChange="previewMedia();">
                 <audio class="w-100" id="audioPlayer" controls style="display:none;"></audio>
                 <video class="fixed-size-video" id="videoPlayer" controls style="display:none;"></video>
                 <!-- Se muestra el reproductor solo si hay un archivo cargado -->
                 {% if uploaded_file_url %}
-                    <h5 class="card-title">Se subió el siguiente archivo</h5>
-                    <audio class="w-100" id="plyr-audio-player" controls>
-                        <source src="{{uploaded_file_url}}" type="audio/mp3" />
-                    </audio>
+                <h5 class="card-title">Se subió el siguiente archivo</h5>
+                <audio class="w-100" id="plyr-audio-player" controls>
+                    <source src="{{uploaded_file_url}}" type="audio/mp3" />
+                </audio>
                 {% endif %}
 
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Compelete la siguiente Información Básica</h5>
                         <p>Rellene todos los campos del formulario para ir al siguiente paso.</p>
-            
+
                         <!-- Browser Default Validation -->
-                          <div class="col-md-4">
+                        <div class="col-md-4">
                             <label for="inputDate" class="col-sm-2 col-form-label">Fecha</label>
                             <div class="col-sm-10">
-                              <input type="date" name="date_transcript" class="form-control"   required>
+                                <input type="date" name="date_transcript" class="form-control" required>
                             </div>
-                          </div>
-                          <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
                             <label for="validationDefault02" class="form-label">Número de ID</label>
-                            <input type="text" name="number_proces_transcript"  class="form-control" id="number_proces_transcript" placeholder="124565436546543654" required>
-                          </div>
-                          <div class="col-md-4">
+                            <input type="text" name="number_proces_transcript" class="form-control"
+                                id="number_proces_transcript" placeholder="124565436546543654" required>
+                        </div>
+                        <div class="col-md-4">
                             <label for="name_transcript" class="form-label">Proceso</label>
                             <div class="input-group">
-                              <span class="input-group-text" id="inputGroupPrepend2"></span>
-                              <input type="text" name="name_transcript" class="form-control" id="name_transcript" placeholder="Demandante - Demandado" required>
+                                <span class="input-group-text" id="inputGroupPrepend2"></span>
+                                <input type="text" name="name_transcript" class="form-control" id="name_transcript"
+                                    placeholder="Demandante - Demandado" required>
                             </div>
-                          </div>
-                          <div class="col-md-3">
-                            <label for="id_etapa_trans" class="form-label">Etapa</label>
-                            <select class="form-select" id="id_etapa_trans" required>
-                                <option selected>Seleccione una Etapa</option>
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.id_etapa_trans.id_for_label }}">Etapa:</label>
+                            <select name="id_etapa_trans" id="{{ form.id_etapa_trans.id_for_label }}" class="form-select">
+                                <option value="" selected>Seleccione una etapa</option>
+                                <!-- El llenado de las opciones se hace desde el JavaScript a través de la API -->
                             </select>
-                          </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_folder">Carpeta:</label>
+                            <select name="folder" id="id_folder" class="form-select">
+                                <option value="" selected>Seleccione una carpeta o subcarpeta</option>
+                                {% for folder in main_folders %}
+                                    <optgroup label="{{ folder.folder_name }}">
+                                        <option value="{{ folder.id }}">{{ folder.folder_name }}</option>
+                                        {% for subfolder in folder.folder_set.all %}
+                                            <option value="{{ subfolder.id }}">- {{ subfolder.folder_name }}</option>
+                                        {% endfor %}
+                                    </optgroup>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-8">
+                            <label for="description_transcript" class="col-sm-2 col-form-label">Observaciones</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" name="description_transcript"
+                                    style="height: 100px"></textarea>
+                            </div>
+                        </div>
                           <!-- Botón para abrir la modal -->
-                              <div class="col-md-8">
-                                <label for="description_transcript" class="col-sm-2 col-form-label">Observaciones</label>
-                                <div class="col-sm-10">
-                                    <textarea class="form-control" name="description_transcript" style="height: 100px"></textarea>
-                                </div>
-                              </div>
-                              <div class="col-md-12">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#verticalycentered">Procesar la Transcripción</button>
-                              </div>
-                              <div class="modal fade" id="verticalycentered" tabindex="-1" aria-labelledby="verticalycenteredLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Confirmación del Proceso</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            ¿Está seguro que desea realizar el proceso de transcripción?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                            <button type="submit" class="btn btn-primary"><i class="bi bi-soundwave"></i> Procesar</button>
-                                        </div>   
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#verticalycentered">Procesar la Transcripción</button>
+                        </div>
+                        <div class="modal fade" id="verticalycentered" tabindex="-1"
+                            aria-labelledby="verticalycenteredLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Confirmación del Proceso</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ¿Está seguro que desea realizar el proceso de transcripción?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger"
+                                            data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="submit" class="btn btn-primary"><i class="bi bi-soundwave"></i>
+                                            Procesar</button>
                                     </div>
                                 </div>
-                              </div>
+                            </div>
                         </div>
-                                         
-                      </div>
-                   </div>
+                    </div>
+
                 </div>
-            </form>
-        </div> 
+        </div>
     </div>
+    </form>
+</div>
+</div>
 </div>
 <!-- SCRIPT DEL FORMULARIO-->
 <script>
-  
-   fetch('/api/etapas/')
+
+    fetch('/api/etapas/')
         .then(response => response.json())
         .then(data => {
             const select = document.getElementById('id_etapa_trans');
@@ -136,66 +160,66 @@
                     },
                     body: JSON.stringify({ etapa_name: newEtapaName })
                 })
-                .then(response => response.json())
-                .then(newEtapa => {
-                    // Agregar la nueva etapa al campo de selección
-                    const newOption = document.createElement('option');
-                    newOption.value = newEtapa.id_etapa_trans;
-                    newOption.textContent = newEtapa.etapa_name;
-                    selectEtapa.appendChild(newOption);
+                    .then(response => response.json())
+                    .then(newEtapa => {
+                        // Agregar la nueva etapa al campo de selección
+                        const newOption = document.createElement('option');
+                        newOption.value = newEtapa.id_etapa_trans;
+                        newOption.textContent = newEtapa.etapa_name;
+                        selectEtapa.appendChild(newOption);
 
-                    // Cerrar la ventana modal
-                    const addEtapaModal = new bootstrap.Modal(document.getElementById('addEtapaModal'));
-                    addEtapaModal.hide();
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Hubo un error al agregar la nueva etapa. Por favor, inténtalo de nuevo.');
-                });
+                        // Cerrar la ventana modal
+                        const addEtapaModal = new bootstrap.Modal(document.getElementById('addEtapaModal'));
+                        addEtapaModal.hide();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Hubo un error al agregar la nueva etapa. Por favor, inténtalo de nuevo.');
+                    });
             }
         });
     });
 
 
 
-    document.querySelector('form').addEventListener('submit', function(e) {
-          e.preventDefault();
+    document.querySelector('form').addEventListener('submit', function (e) {
+        e.preventDefault();
 
-          const formData = new FormData(this);
+        const formData = new FormData(this);
 
-          // Ocultar reproductor preliminar de audio y video
-          const audioPlayer = document.getElementById('audioPlayer');
-          const videoPlayer = document.getElementById('videoPlayer');
-          audioPlayer.style.display = 'none';
-          videoPlayer.style.display = 'none';
+        // Ocultar reproductor preliminar de audio y video
+        const audioPlayer = document.getElementById('audioPlayer');
+        const videoPlayer = document.getElementById('videoPlayer');
+        audioPlayer.style.display = 'none';
+        videoPlayer.style.display = 'none';
 
-          // Mostrar archivo cargado
-          const plyrAudioPlayer = document.getElementById('plyr-audio-player');
-          plyrAudioPlayer.style.display = 'block';
+        // Mostrar archivo cargado
+        const plyrAudioPlayer = document.getElementById('plyr-audio-player');
+        plyrAudioPlayer.style.display = 'block';
 
-          fetch('/api/transcripts/', {
-              method: 'POST',
-              headers: {
-                  'Authorization': 'Token tu_token_de_autenticacion', // Si estás usando Token authentication
-                  'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-              },
-              body: formData
-          })
-          .then(response => response.json())
-          .then(data => {
-              if (data.id) {
-                window.location.replace("/transcript/"); // Redirige al formulario TRANSCRIPT.
-              } else {
-                  alert('Hubo un error al guardar la información. Por favor, inténtalo de nuevo.');
-              }
-          })
-          .catch(error => {
-              console.error('Error:', error);
-              alert('Hubo un error al guardar la información. Por favor, inténtalo de nuevo.');
-          });
-     });
+        fetch('/api/transcripts/', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Token tu_token_de_autenticacion', // Si estás usando Token authentication
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            },
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.id) {
+                    window.location.replace("/transcript/"); // Redirige al formulario TRANSCRIPT.
+                } else {
+                    alert('Hubo un error al guardar la información. Por favor, inténtalo de nuevo.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Hubo un error al guardar la información. Por favor, inténtalo de nuevo.');
+            });
+    });
 
-  
+
 
     function previewMedia() {
         const mediaInput = document.getElementById('mediaInput');
@@ -206,7 +230,7 @@
             const fileType = mediaInput.files[0].type;
             const reader = new FileReader();
 
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 if (fileType.startsWith('audio/')) {
                     audioPlayer.src = e.target.result;
                     audioPlayer.style.display = 'block';
@@ -221,8 +245,7 @@
             reader.readAsDataURL(mediaInput.files[0]);
         }
     }
-  </script>
-  
+</script>
+
 
 {% endblock %}
-
