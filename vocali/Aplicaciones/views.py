@@ -46,7 +46,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('profile')  # Redirige a la página de perfil después de iniciar sesión correctamente
+            return redirect('login')  # Redirige a la página de perfil después de iniciar sesión correctamente
         else:
             # Autenticación fallida, vuelve a mostrar la página de inicio de sesión con un error
             return render(request, 'login.html', {'error': 'Invalid username or password'})
@@ -57,9 +57,9 @@ def login_view(request):
 # TEMPLATE_DIRS = (
 #     'os.path.joins(BASE_DIR, "templates")'
 #     )
+
 def index(request):
     return render(request, "index.html")
-
 
 @login_required
 def dashboard(request):
@@ -108,7 +108,7 @@ def folder_detail(request, folder_id):
     folder = get_object_or_404(Folder, id=folder_id)
     return render(request, 'folder_detail.html', {'folder': folder})
 
-
+@login_required
 def profile_view(request):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -126,6 +126,7 @@ def profile_view(request):
 
 
 # CREATE FOLDERS AND SUBFOLDERS THE USER
+@login_required
 def create_folder(request):
     if request.method == 'POST':
         form = FolderForm(request.POST)
@@ -140,6 +141,7 @@ def create_folder(request):
 
 
 #tipos de tIdentificación
+@login_required
 def type_identity_view(request):
       type_identities = tType_identity.objects.all()
       return render(request, 'type_identity.html', {'type_identities': type_identities})
@@ -171,7 +173,7 @@ class tType_identityDeleteView(DeleteView):
         return self.delete(request,*args, **kwargs)
 
 #tipos de tLanguage
-
+@login_required
 def tLanguage_view(request):
       tLanguages = tLanguage.objects.all()
       return render(request, 'tLanguage.html', {'languages': tLanguages})
@@ -204,7 +206,7 @@ class tLanguageDeleteView(DeleteView):
         return self.delete(request,*args, **kwargs)
 
 #Roles de transcripcion
-
+@login_required
 def tRoles_trans_view(request):
     tRoles_transs = tRoles_trans.objects.all()
     return render(request, 'tRoles_trans.html',{'roles_trans': tRoles_transs})
@@ -235,7 +237,7 @@ class tRoles_transDeleteView(DeleteView):
         return self.delete(request,*args, **kwargs)
 
 #Etapas de transcripcion
-
+@login_required
 def tEtapas_trans_view(request):
     tEtapas_transs = tEtapas_trans.objects.all()
     return render(request,'tEtapas_trans.html',{'etapas_trans': tEtapas_transs})
@@ -279,6 +281,7 @@ def upload_file(request):
         return render(request, 'upload.html', {'uploaded_file_url': uploaded_file_url})
     return render(request, 'upload.html')
 
+@login_required
 def tTranscript_view(request):
     tTranscripts = tTranscript.objects.all()
     return render(request, 'tTranscript.html',{'transcripts': tTranscripts})
@@ -308,7 +311,7 @@ class tTranscriptDeleteView(DeleteView):
         return self.delete(request, *args, **kwargs)
 
 #Personas
-
+@login_required
 def tPerson_view(request):
     tPersons = tPerson.objects.all()
     return render(request, 'tPerson.html',{'persons': tPersons})

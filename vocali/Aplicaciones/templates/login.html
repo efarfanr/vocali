@@ -1,116 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta http-equiv="x-ua-compatible" content="ie=edge" />
-  <title>Sistema de Transcripción Iteligente| VOCALI </title>
-  <!-- MDB icon -->
-  <link rel="icon" href="/static/assets/images/icons/favicon.ico" type="image/x-icon" />
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" />
-  <!-- Google Fonts Roboto -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
-  <!-- MDB -->
-  <link rel="stylesheet" href="/static/assets/css/bootstrap-login-form.min.css" />
+	<title>Sistema de Transcripción Iteligente| VOCALI </title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="/static/login/images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/static/login/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/static/login/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/static/login/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/static/login/vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="/static/login/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/static/login/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/static/login/vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="/static/login/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/static/login/css/util.css">
+	<link rel="stylesheet" type="text/css" href="/static/login/css/main.css">
+<!--===============================================================================================-->
 </head>
-{% comment %} background: -webkit-linear-gradient(to top, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1)); {% endcomment
-%}
-
 <body>
-  <style>
-    .gradient-custom {
-      /* fallback for old browsers */
-      background: #6a11cb;
+	
+	<div class="limiter">
+		<div class="container-login100" style="background-image: url('/static/login/images/bg-01.jpg');">
+			<div class="wrap-login100 p-l-110 p-r-110 p-t-62 p-b-33">
+				<form class="login100-form validate-form flex-sb flex-w" action="{% url 'admin:login' %}" method="post">
+					{% csrf_token %} 
+					<span class="login100-form-title p-b-53">
+						<img src="/static/assets/images/Logopeq.png" alt="" />
+					</span>
+					<span class="login100-form-title p-b-33">
+						Sign into your account
+					</span>
 
-      /* Chrome 10-25, Safari 5.1-6 
-      background: -webkit-linear-gradient(to right, rgba(7,28,43, 1), rgba(28, 61, 91, 1));*/
+					
+					<div class="p-t-31 p-b-9">
+						<span class="txt1">
+							Usuario
+						</span>
+					</div>
+					<div class="wrap-input100 validate-input" data-validate = "Username is required">
+						<input class="input100" type="text" id="username" name="username" >
+						<span class="focus-input100"></span>
+					</div>
+					
+					<div class="p-t-13 p-b-9">
+						<span class="txt1">
+							Contraseña
+						</span>
 
-      background: repeating-linear-gradient(0deg, rgb(29, 7, 43), rgb(201, 114, 217) 10%, rgb(30, 7, 43) 1000%);
+						<a href="#" class="txt2 bo1 m-l-5">
+							Forgot?
+						</a>
+					</div>
+					<div class="wrap-input100 validate-input" data-validate = "Password is required">
+						<input class="input100" type="password" name="password" id="password">
+						<span class="focus-input100"></span>
+					</div>
 
+					<div class="container-login100-form-btn m-t-17">
+						<button class="login100-form-btn">
+							Sign In
+						</button>
+					</div>
 
-      /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ 
-      background: linear-gradient(to right, rgba(7,28,43, 1), rgba(28, 61, 91, 1)) */
-      background: repeating-linear-gradient(0deg, rgb(29, 7, 43), rgb(201, 114, 217) 10%, rgb(30, 7, 43) 150%);
-    }
+					<div class="w-full text-center p-t-55">
+						<span class="txt2">
+							Not a member?
+						</span>
 
-    .card {
-      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-      /* Agrega una sombra */
-    }
-  </style>
-  <!-- Start your project here-->
-  {% comment %} <section class="vh-100" style="background-color: #52127f;"> {% endcomment %}
-    <section class="vh-100 gradient-custom">
-      <div class="container py-5 h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-          <div class="col col-xl-10">
-            <div class="card" style="border-radius: 1rem;">
-              <div class="row g-0">
-                <div class="col-md-6 col-lg-5 d-none d-md-block">
-                  <img {% comment %}
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp" {% endcomment
-                    %} src="/static/assets/images/bg_4.jpg" alt="login form" class="img-fluid"
-                    style="border-radius: 1rem 0 0 1rem;" />
-                </div>
-                <div class="col-md-6 col-lg-7 d-flex align-items-center">
-                  <div class="card-body p-4 p-lg-5 text-black">
+						<a href="#" class="txt2 bo1">
+							Sign up now
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
 
-                    <form action="{% url 'admin:login' %}" method="post">
-                      {% csrf_token %}
+	<div id="dropDownSelect1"></div>
+	
+<!--===============================================================================================-->
+	<script src="/static/login/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/static/login/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/static/login/vendor/bootstrap/js/popper.js"></script>
+	<script src="/static/login/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/static/login/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/static/login/vendor/daterangepicker/moment.min.js"></script>
+	<script src="/static/login/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="/static/login/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="/static/login/js/main.js"></script>
 
-
-                      <a href="/" class="logo d-flex align-items-center">
-                        <div class="d-flex align-items-center mb-3 pb-1">
-                          <!--<i class="fas fa-cubes fa-2x me-3" style="color: #6b0c93;"></i>  width="150" height="70"  -->
-                          <img src="/static/assets/images/Logo.png" alt="" />
-
-                        </div>
-                      </a>
-
-                      <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
-
-                      <div class="form-outline mb-4">
-                        <input type="text" id="form2Example17" class="form-control form-control-lg" id="username"
-                          name="username" />
-                        <label class="form-label" for="form2Example17">Usr Name</label>
-                      </div>
-
-                      <div class="form-outline mb-4">
-                        <input type="password" id="form2Example27" class="form-control form-control-lg" id="password"
-                          name="password">
-                        <label class="form-label" for="form2Example27">Password</label>
-                      </div>
-
-                      <div class="pt-1 mb-4">
-                        <input type="submit" value="Log In" class="btn btn-dark btn-lg btn-block">
-                        {% comment %} <button class="btn btn-dark btn-lg btn-block" type="submit"
-                          value="Log In">Login</button> {% endcomment %}
-
-                      </div>
-
-                      <a class="small text-muted" href="#!">Forgot password?</a>
-                      <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="#!"
-                          style="color: #393f81;">Register here</a></p>
-                      <a href="#!" class="small text-muted">Terms of use.</a>
-                      <a href="#!" class="small text-muted">Privacy policy</a>
-                    </form>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- End your project here-->
-
-    <!-- MDB -->
-    <script type="text/javascript" src="/static/assets/js/mdb.min.js"></script>
-    <!-- Custom scripts -->
-    <script type="text/javascript"></script>
 </body>
-
 </html>

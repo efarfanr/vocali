@@ -38,7 +38,6 @@ urlpatterns = [
     path('pagescontact/', views.pagescontact, name='pagescontact'),
     path('principal/', views.principal, name='principal'),
     path('dashboard/', views.dashboard, name='dashboard'),
-    
 
 
     path('api/folder/', views.FolderListCreateView.as_view(), name='folder-list-create'),

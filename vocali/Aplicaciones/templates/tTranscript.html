@@ -17,8 +17,8 @@
             <form>
                 <div class="row mb-3">
                     <div class="col-sm-50">
-                        <label for="inputEmail" class="col-sm-2 col-form-label">12/12/23</label> <label
-                            for="inputEmail" class="col-sm-2 col-form-label">Compensar - Rama Judicial</label>
+                        <label for="inputEmail" class="col-sm-2 col-form-label">12/12/23</label> <label for="inputEmail"
+                            class="col-sm-2 col-form-label">Compensar - Rama Judicial</label>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -33,20 +33,21 @@
                 </div>
                 <div class="col-sm-24 search-bar">
                     <form class="search-form d-flex align-items-center" method="POST" action="/tTranscript/">
-                      <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-                      <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+                        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+                        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
                     </form>
                     <div class="btn-group  text-align: left " role="group" aria-label="Opciones">
                         <button type="button" class="btn btn-success"><i class="bi bi-check-circle"></i></button>
                         <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
-                        <button type="button" class="btn btn-warning"><i class="bi bi-exclamation-triangle"></i></button>
+                        <button type="button" class="btn btn-warning"><i
+                                class="bi bi-exclamation-triangle"></i></button>
                         <button type="button" class="btn btn-info"><i class="bi bi-info-circle"></i></button>
                     </div>
-                    
+
                 </div><!-- End Search Bar -->
-                
+
             </form>
-        </div> 
+        </div>
     </div>
 </section>
 <section>
@@ -56,7 +57,7 @@
                 <source src="{{uploaded_file_url}}" type="audio/mp3" />
             </audio>
         </div>
-    </div>    
+    </div>
 </section>
 <section class="section">
     <div class="row">
@@ -69,7 +70,7 @@
                             <div class="col-sm-5">
                                 <input type="date" class="form-control">
                             </div>
-                        </div>                   
+                        </div>
                         <div class="row mb-3">
                             <label for="text" class="col-sm-15 col-form-label">Nombre de la Transcripción</label>
                             <div class="col-sm-10">
@@ -93,7 +94,7 @@
                                 <button type="button" class="btn btn-outline-secondary">Crear Carpeta</button>
                             </div>
                             <div class="col-sm-5">
-                                
+
                                 <select class="form-select" aria-label="Default select example">
                                     <option selected>Crear Carpeta</option>
                                     <option value="1">Prejuridico</option>
@@ -126,7 +127,7 @@
                             <div class="col-sm-15">
                                 <textarea class="form-control" style="height: 100px"></textarea>
                             </div>
-                        </div>                       
+                        </div>
                     </form><!-- End General Form Elements -->
 
                 </div>
@@ -138,50 +139,32 @@
 
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Texto de la Transcripción</h5>
 
-                    <form id="myForm" style="max-height: 700px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;">
+
+                    <!-- Añadir botón de exportación aquí -->
+
+                    <form id="myFormjson" method="post" enctype="multipart/form-data"
+                        style="max-height: 700px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;">
+                        <div class="col-lg-8">
+                            Texto de la Transcripción
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="exportDropdownButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                ...
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="exportDropdownButton">
+                                <a class="dropdown-item" href="javascript:void(0)" onclick="exportToWord()">Word doc</a>
+                                <a class="dropdown-item" href="javascript:void(0)" onclick="exportToWordx()">Word docx</a>
+                                <a class="dropdown-item" href="javascript:void(0)" onclick="exportToPdf()">PDF</a>
+                                <a class="dropdown-item" href="javascript:void(0)" onclick="exportToTXT()">TXT</a>
+                           </div>
+                        </div>
                         <input type="file" id="jsonFileInput" accept=".json" onchange="displayJSON()">
+
                         <div id="jsonOutput"></div>
-                    
-                        <script>
-                            function displayJSON() {
-                                const fileInput = document.getElementById('jsonFileInput');
-                                const file = fileInput.files[0];
-                                const outputDiv = document.getElementById('jsonOutput');
-                    
-                                if (file) {
-                                    const reader = new FileReader();
-                                    reader.onload = function(event) {
-                                        try {
-                                            const jsonObject = JSON.parse(event.target.result);
-                                            outputDiv.innerHTML = displayObject(jsonObject);
-                                        } catch (error) {
-                                            alert('Error parsing JSON: ' + error.message);
-                                        }
-                                    }
-                                    reader.readAsText(file);
-                                } else {
-                                    outputDiv.innerHTML = '';
-                                }
-                            }
-                    
-                            function displayObject(obj) {
-                                let outputHtml = '<ul>';
-                                for (const key in obj) {
-                                    if (typeof obj[key] === 'object') {
-                                        outputHtml += `<li><span class="json-key">${key}:</span> ${displayObject(obj[key])}</li>`;
-                                    } else {
-                                        outputHtml += `<li><span class="json-key">${key}:</span> ${obj[key]}</li>`;
-                                    }
-                                }
-                                outputHtml += '</ul>';
-                                return outputHtml;
-                            }
-                        </script>
+
 
                     </form>
-                    
+
 
                 </div>
             </div>
@@ -189,4 +172,80 @@
         </div>
     </div>
 </section>
+
+<script>
+    function displayJSON() {
+        const fileInput = document.getElementById('jsonFileInput');
+        const file = fileInput.files[0];
+        const outputDiv = document.getElementById('jsonOutput');
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                try {
+                    const jsonObject = JSON.parse(event.target.result);
+                    outputDiv.innerHTML = displayObject(jsonObject);
+                } catch (error) {
+                    alert('Error parsing JSON: ' + error.message);
+                }
+            }
+            reader.readAsText(file);
+        } else {
+            outputDiv.innerHTML = '';
+        }
+    }
+
+    function displayObject(obj) {
+        let outputHtml = '<ul>';
+        for (const key in obj) {
+            if (typeof obj[key] === 'object') {
+                outputHtml += `<li><span class="json-key">${key}:</span> ${displayObject(obj[key])}</li>`;
+            } else {
+                outputHtml += `<li><span class="json-key">${key}:</span> ${obj[key]}</li>`;
+            }
+        }
+        outputHtml += '</ul>';
+        return outputHtml;
+    }
+
+    function exportToWord() {
+        const content = document.getElementById('jsonOutput').innerText;
+        const blob = new Blob([content], { type: 'application/msword' });
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = 'data.doc';
+        downloadLink.click();
+    }
+    function exportToWordx() {
+    var content = document.getElementById('jsonOutput').innerText;
+
+    var zip = new JSZip();
+    var docContent = '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">' +
+                     '<w:body><w:p><w:r><w:t>' + content + '</w:t></w:r></w:p></w:body>' +
+                     '</w:document>';
+
+    zip.file("word/document.xml", docContent);
+
+    zip.generateAsync({type:"blob", mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"})
+       .then(function(blob) {
+           saveAs(blob, "data.docx");
+       });
+}
+
+    function exportToPDF() {
+        alert('Para exportar a PDF, considera usar una biblioteca como pdfmake o implementarlo en el backend.');
+    }
+
+    function exportToTXT() {
+        const content = document.getElementById('jsonOutput').innerText;
+        const blob = new Blob([content], { type: 'text/plain' });
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = 'data.txt';
+        downloadLink.click();
+    }
+
+</script>
+
+
 {% endblock %}
